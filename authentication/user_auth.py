@@ -1,5 +1,7 @@
 """
-User Authentication Module
+User & Password Authentication Module #Auth#
+Responsible for user validation
+
 Current: Console based
 Scope: GUI implementation
 """
@@ -10,6 +12,8 @@ import getpass
 
 
 def process_file(file_):
+
+	# Function is dedicated to separate user_names and passwords in the form of list
 	user_names = []
 	passwords = []
 
@@ -46,11 +50,13 @@ def user_auth(filename):
 
 		user = raw_input('User Name: ')
 		
+		# Invalid user name
 		if not user in user_names:
 			sys.exit('Authentication failed: user ' + user + ' does not exist\nTerminating!')
 
-
+		# user respective password
 		stored_pass = passwords[user_names.index(user)].split('\n')[0]
+
 		#print repr(stored_pass)
 
 		hash_list = stored_pass.split('$')
@@ -60,8 +66,10 @@ def user_auth(filename):
 		while pass_try < pass_allowed:
 			user_pass = getpass.getpass('Enter Password: ')
 			
+			# Calculation of hash value based on entered password
 			cal_hash_val = hashlib.sha224(salt_val + user_pass).hexdigest()
 			
+			# Comparison of stored and calculated hash value for authentication
 			if cal_hash_val != hash_val:
 				pass_allowed -= 1
 				print "Incorrect password: " + str(pass_allowed) + " more attempts left\n"
