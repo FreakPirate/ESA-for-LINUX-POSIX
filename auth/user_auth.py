@@ -33,7 +33,7 @@ def process_file(file_):
 		print e.args
 
 
-def user_auth(filename):
+def auth(filename):
 	try:		
 		pass_try = 0
 		pass_allowed = 3		#Incorrect password allowed
@@ -78,9 +78,9 @@ def user_auth(filename):
 				break
 
 		if auth_flag == 0:
-			return "Authentication failed: Terminating"
+			print "Authentication failed: Terminating\n\n"
 		else:
-			print "User logged in successfully!"
+			print "User logged in successfully!\n\n"
 	
 	except Exception as inst:
 		print type(inst)     # the exception instance
@@ -88,4 +88,5 @@ def user_auth(filename):
 		print inst
 			
 if __name__ == "__main__":
-	user_auth(sys.argv[1])
+	filename = 'passwd.lck'
+	auth(filename)

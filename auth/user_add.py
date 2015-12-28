@@ -12,7 +12,7 @@ import getpass
 import salt
 
 
-def user_add(filename):
+def add(filename):
 	# Adds a user name and password pair in the given file
 	# It calculates the hash of entered password + generated salt combined
 
@@ -50,8 +50,9 @@ def user_add(filename):
 		print e.args
 		sys.exit("Problem appending: 'insert()'")
 
-	print '\nPassword safely stored in ' + filename + '\n'
+	print '\nPassword safely stored in ' + filename + '\n\n'
 
 
 if __name__ == "__main__":
-	user_add(sys.argv[1])
+	filename = 'passwd.lck'
+	add(filename)
