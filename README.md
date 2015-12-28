@@ -7,6 +7,9 @@ It provides security management, vulnerability detection/removal and Intrusion d
 some core functionalities of ESA are:
 
   * Access Control List (ACL) configuration
+  * Authentication Server
+  * Secure remote access to ESA (Implicit setup)
+  * GUI(*for Rookie*) + Console (*for advanced users*) support
   2. Complete Firewall configuration
   3. Package Control
   4. User management
