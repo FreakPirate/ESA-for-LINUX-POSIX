@@ -3,11 +3,15 @@ Core functional and management module for the whole project
 """
 
 import sys
+import SplashScreen
 from auth import user_auth, user_add
 
-def main(args = 'passwd.lck'):
 
+def main(args='passwd.lck'):
     filename = args
+
+    pix_path = "images/splash_screen_01.jpg"
+    SplashScreen.show(pix_path)
 
     print "\n\nEnhanced Security Agent (ESA) for POSIX systems (v1.0, console based)\n\n"
     while True:
@@ -28,6 +32,7 @@ def main(args = 'passwd.lck'):
             print "Invalid input: Try again!"
 
     print "\nThanks for using ESA!\nTerminating..."
+
 
 if __name__ == '__main__':
     main()
