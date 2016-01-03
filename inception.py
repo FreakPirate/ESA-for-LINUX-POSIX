@@ -3,36 +3,37 @@ Core functional and management module for the whole project
 """
 
 import sys
+import os.path
 import SplashScreen
-from auth import user_auth, user_add
-
+from auth import LoginDialog, RegisterDialog
+from widgets import MainWindow
+from PyQt4 import QtGui
 
 def main(args='passwd.lck'):
-    filename = args
+    lock_file = 'esa.lck'
 
     pix_path = "images/splash_screen_01.jpg"
     SplashScreen.show(pix_path)
 
-    print "\n\nEnhanced Security Agent (ESA) for POSIX systems (v1.0, console based)\n\n"
-    while True:
-        print "Choose from either:"
-        print "1. Add a new entry"
-        print "2. Authenticate"
-        print "0. Exit\n"
+    # GUI MANAGEMENT BEGIN
+    app = QtGui.QApplication(sys.argv)
 
-        val = int(raw_input('Choice: '))
+    if not os.path.isfile(lock_file):
+        file_conn = open(lock_file, 'w')
+        file_conn.close()
+        register = RegisterDialog.RegisterDialog()
+        if not register.exec_():
+            sys.exit(-1)
 
-        if val is 1:
-            user_add.add(filename)
-        elif val is 2:
-            user_auth.auth(filename)
-        elif val is 0:
-            break
-        else:
-            print "Invalid input: Try again!"
+    login = LoginDialog.LoginDialog()
+    if not login.exec_():
+        sys.exit(-1)
 
-    print "\nThanks for using ESA!\nTerminating..."
+    main_window = MainWindow.MainWindow()
+    main_window.show()
+    # GUI END
 
+    sys.exit(app.exec_())
 
 if __name__ == '__main__':
     main()
