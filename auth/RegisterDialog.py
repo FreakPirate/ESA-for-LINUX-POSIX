@@ -4,7 +4,8 @@ import Registrar
 
 
 class RegisterDialog(QtGui.QDialog):
-    def __init__(self, parent=None):
+    def __init__(self, lock_files, parent=None):
+        self.lock_files = lock_files
         super(RegisterDialog, self).__init__(parent)
         self.initUI()
 
@@ -104,7 +105,8 @@ class RegisterDialog(QtGui.QDialog):
             self.re_password.clear()
             return
 
-        register = Registrar.add(username, email, phone, password, sec_question, sec_ans)
+        register = Registrar.add(username, email, phone, password, sec_question, sec_ans,
+                                 self.lock_files[0], self.lock_files[1])
 
         if register == "username":
             self.warn_lbl.setText('Username already present. Try another?')
@@ -139,24 +141,6 @@ class RegisterDialog(QtGui.QDialog):
         self.re_password.clear()
         self.setFocus()
 
-class ValidStringLength(QtGui.QValidator):
-    def __init__(self, parent, min=0, max=100):
-        QtGui.QValidator.__init__(self, parent)
-
-        self.min = min
-        self.max = max
-
-    def validate(self, s, pos):
-        if self.max > -1 and len(s) > self.max:
-            return (QtGui.QValidator.Invalid, pos)
-
-        if self.min > -1 and len(s) < self.min:
-            return (QtGui.QValidator.Intermediate, pos)
-
-        return (QtGui.QValidator.Acceptable, pos)
-
-    def fixup(self, s):
-        pass
 
 class MainWindow(QtGui.QMainWindow):
     def __init__(self, parent=None):

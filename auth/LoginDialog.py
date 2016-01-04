@@ -3,8 +3,9 @@ from PyQt4 import QtGui, QtCore
 import Authenticator
 
 class LoginDialog(QtGui.QDialog):
-    def __init__(self, parent=None):
+    def __init__(self, lock_files, parent=None):
         super(LoginDialog, self).__init__(parent)
+        self.lock_files = lock_files
         self.show()
 
     def show(self):
@@ -45,7 +46,8 @@ class LoginDialog(QtGui.QDialog):
     def handle_login(self):
         username = str(self.username.text())
         password = str(self.password.text())
-        loginCheckTrue = Authenticator.check(username, password)
+
+        loginCheckTrue = Authenticator.check(username, password, self.lock_files[0])
 
         if loginCheckTrue: # do actual login check
             self.accept()
