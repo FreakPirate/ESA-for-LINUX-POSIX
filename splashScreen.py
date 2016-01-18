@@ -3,7 +3,7 @@ from PyQt4.QtGui import *
 import time
 import sys
 
-def show(img_path='images/splash_screen_01.jpg'):
+def show(img_path='images/splashscreen.jpg'):
     app = QApplication(sys.argv)
 
     # Create and display the splash screen

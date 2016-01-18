@@ -38,7 +38,7 @@ def add(username, email, phone, password, sec_ques, sec_ans, file_pass='passwd.l
         file_conn_s = open(file_shadow, 'a')
 
         passwd_str = username + ':' + hash_val + '\n'
-        shadow_str = email + ':' + phone + ':' + sec_ques + ':' + sec_ans + '\n'
+        shadow_str = username + ':' + email + ':' + phone + ':' + sec_ques + ':' + sec_ans + '\n'
 
         file_conn_p.write(passwd_str)
         file_conn_s.write(shadow_str)

@@ -4,8 +4,9 @@ import Registrar
 
 
 class RegisterDialog(QtGui.QDialog):
-    def __init__(self, lock_files, parent=None):
+    def __init__(self, lock_files, logo_path, parent=None):
         self.lock_files = lock_files
+        self.logo_path = logo_path
         super(RegisterDialog, self).__init__(parent)
         self.initUI()
 
@@ -74,7 +75,7 @@ class RegisterDialog(QtGui.QDialog):
         vBox.addStretch(3)
         vBox.addWidget(button_box)
 
-        self.setWindowIcon(QtGui.QIcon('../logo/ESA.png'))
+        self.setWindowIcon(QtGui.QIcon(self.logo_path))
         self.setWindowTitle('Registration Dialog')
         self.resize(250, 300)
 

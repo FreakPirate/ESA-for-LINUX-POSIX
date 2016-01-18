@@ -3,8 +3,9 @@ from PyQt4 import QtGui, QtCore
 import Authenticator
 
 class LoginDialog(QtGui.QDialog):
-    def __init__(self, lock_files, parent=None):
+    def __init__(self, lock_files, logo_path, parent=None):
         super(LoginDialog, self).__init__(parent)
+        self.logo_path = logo_path
         self.lock_files = lock_files
         self.show()
 
@@ -40,7 +41,7 @@ class LoginDialog(QtGui.QDialog):
 
         self.resize(250,150)
         self.setWindowTitle("Authentication")
-        self.setWindowIcon(QtGui.QIcon("../logo/final.jpg"))
+        self.setWindowIcon(QtGui.QIcon(self.logo_path))
         self.setLayout(layout)
 
     def handle_login(self):
