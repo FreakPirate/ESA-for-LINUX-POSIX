@@ -28,7 +28,11 @@ some core functionalities of ESA are:
 ```
   - Clone repository: 
         '$ git clone https://github.com/FreakPirate/ESA-for-LINUX-POSIX.git'
-  - Run the 'inception.py' script:
-        '$ python inception.py'
+  - To start the application:
+        - Either click on file 'esa' or,
+	- copy 'esa' to '/bin' by:
+		$ cp esa /bin
+	- finally
+		$ esa
 ```
 **Note:** *In near future we assure to provide a systematic installation procedure or package installer.*
