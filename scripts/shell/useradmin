@@ -1,0 +1,187 @@
+#!/bin/bash
+
+## SETUP BIN PATHS ##
+USERADD="/usr/sbin/useradd"
+USERDEL="/usr/sbin/userdel"
+USERMOD="/usr/sbin/usermod"
+PASSWD="/usr/bin/passwd"
+
+## SETUP SWITCHES/ARGUMENTS ##
+U=
+G=
+C=
+D=
+S=
+P=
+R=
+L=
+A=
+M=
+
+## ADDITIONAL DATA ##
+COMMAND=
+USERID=
+GROUPID=
+SHELL=
+COMMENT=
+HOMEDIR=
+ACCOUNTNAME=
+PASSWORD=
+NEWLOGIN=
+
+## FLAGS ##
+MODFLAG=0
+
+error(){
+	local errorLog=$1
+	echo $errorLog
+	echo "Try \"useradmin --help\" or \"useradmin -h\" for more information"
+	exit 1
+}
+
+error1(){
+	echo "useradmin: Passed more than one instructions"
+	echo "           use only one from the following (add | delete | modify)"
+	exit 2
+}
+
+usage(){
+	echo "Usage: useradmin [options]"
+	echo "Options: "
+	printf "  add\t\t\t\tTo add a new user account\n"
+	printf "  delete\t\t\tTo delete an existing user account\n"
+	printf "  modify\t\t\tTo modify the properties of an existing user account\n\n"
+	printf "  -a, --account-name NAME\tUser name or Account name to Add|Delete|Modify\n"
+	printf "  -c, --comment COMMENT\t\tComment field of the account\n"
+	printf "  -d, --home-dir HOME_DIR\tHome directory of the account\n"
+	printf "  -g, --gid GROUP_ID\t\tGroup name or ID of the primary group of the account\n"
+	printf "  -h, --help\t\t\tDisplay this help message and exit\n"
+	printf "  -l, --login NEW_LOGIN\t\tNew login name of the account\n"
+	printf "  -p, --password PASSWORD\tLogin password of the account\n"
+	printf "  -r, --remove\t\t\tTo remove the home directory of the account as well\n"
+	printf "  -s, --shell SHELL\t\tDefault login shell provided to the account\n"
+	printf "  -u, --uid USER_ID\t\tUser ID of the account\n"
+}
+
+addUser(){
+	$COMMAND $U $USERID $G $GROUPID $C $COMMENT $D $HOMEDIR $S $SHELL $ACCOUNTNAME
+	[ ! -z $ACCOUNTNAME ] && [ ! -z $PASSWORD ] && echo -e "$PASSWORD\n$PASSWORD" | $PASSWD --stdin $ACCOUNTNAME
+}
+
+deleteUser(){
+	$COMMAND $R $ACCOUNTNAME
+}
+
+modifyUser(){
+	test $MODFLAG -eq 1 && $COMMAND $L $NEWLOGIN $U $USERID $G $GROUPID $C $COMMENT $S $SHELL $D $HOMEDIR $M $ACCOUNTNAME
+	[ ! -z $ACCOUNTNAME ] && [ ! -z $PASSWORD ] && echo -e "$PASSWORD\n$PASSWORD" | $PASSWD --stdin $ACCOUNTNAME
+	echo "Success"
+}
+
+### MAIN ###
+
+if [ $# -eq 0 ]
+	then
+	error "useradmin: Insufficient arguments"
+fi
+
+while [ "$1" != "" ]; do
+	case $1 in
+		add )
+			[ "$2" != "delete" ] && [ "$2" != "modify" ] && COMMAND=$USERADD || error1
+			;;
+		
+		delete )
+			[ "$2" != "add" ] && [ "$2" != "modify" ] && COMMAND=$USERDEL || error1
+			;;
+		
+		modify )
+			[ "$2" != "add" ] && [ "$2" != "delete" ] && COMMAND=$USERMOD || error1
+			;;
+
+		-a | --account-name )
+			shift
+			ACCOUNTNAME=$1
+			;;
+
+		-u | --uid )
+			U=$1
+			shift
+			USERID=$1
+			MODFLAG=1
+			;;
+
+		-g | --gid )
+			G=$1
+			shift
+			GROUPID=$1
+			MODFLAG=1
+			;;
+
+		-c | --comment )
+			C=$1
+			shift
+			COMMENT=$1
+			MODFLAG=1
+			;;
+
+		-d | --home-dir )
+			D=$1
+			M="-m"
+			shift
+			HOMEDIR=$1
+			MODFLAG=1
+			;;
+
+		-s | --shell )
+			S=$1
+			shift
+			SHELL=$1
+			MODFLAG=1
+			;;
+
+		-p | --password )
+			P==$1
+			shift
+			PASSWORD=$1
+			;;
+
+		-r | --remove )
+			R=$1
+			;;
+
+		-l | --login)
+			L=$1
+			shift
+			NEWLOGIN=$1
+			MODFLAG=1
+			;;
+
+		-h | --help )
+			usage
+			exit
+			;;
+
+		* )
+			error "useradmin: unrecognised argument '$1' "
+			usage
+			exit 1
+			;;
+	esac
+	shift
+done
+
+test -z $ACCOUNTNAME && error "useradmin: UserName/AccountName not specified"
+
+test -z $COMMAND && error "useradmin: No operation specified (add|delete|modify)"
+
+if [ $COMMAND = $USERADD ]
+	then
+	addUser
+elif [ $COMMAND = $USERDEL ]
+	then
+	deleteUser
+elif [ $COMMAND = $USERMOD ]
+	then
+	modifyUser
+fi
