@@ -4,8 +4,9 @@ import Registrar
 
 
 class RegisterDialog(QtGui.QDialog):
-    def __init__(self, lock_files, logo_path, parent=None):
-        self.lock_files = lock_files
+    def __init__(self, database_name, table_names, logo_path, parent=None):
+        self.database_name = database_name
+        self.table_names = table_names
         self.logo_path = logo_path
         super(RegisterDialog, self).__init__(parent)
         self.initUI()
@@ -53,7 +54,7 @@ class RegisterDialog(QtGui.QDialog):
         registerLayout = QtGui.QFormLayout()
         registerLayout.addRow("Username*", self.username)
         registerLayout.addRow("E-Mail*", self.email)
-        registerLayout.addRow("Phone No*", self.phone)
+        registerLayout.addRow("Phone No", self.phone)
         registerLayout.addRow("Password*", self.password)
         registerLayout.addRow("Re-Enter*", self.re_password)
         registerLayout.addRow("Security Question", self.sec_ques)
@@ -96,32 +97,27 @@ class RegisterDialog(QtGui.QDialog):
         sec_question = str(self.sec_ques.currentText())
         sec_ans = str(self.sec_ans.text())
 
-        if username == '' or email == '' or phone == '' or password == '' or re_password == '' or sec_ans == '':
-            self.warn_lbl.setText("You can't leave the (*) Required Fields empty.")
+        if username == '' or email == '' or password == '' or re_password == '' or sec_ans == '':
+            self.warn_lbl.setText("(*) marked fields must be filled.")
             return
 
         if password != re_password:
-            self.warn_lbl.setText("Passwords don't match. Try again?")
+            self.warn_lbl.setText("Passwords do not match")
             self.password.clear()
             self.re_password.clear()
             return
 
         register = Registrar.add(username, email, phone, password, sec_question, sec_ans,
-                                 self.lock_files[0], self.lock_files[1])
+            database_name, table_names)
 
         if register == "username":
-            self.warn_lbl.setText('Username already present. Try another?')
+            self.warn_lbl.setText('User already exist')
             self.username.clear()
             return
 
         if register == "email":
-            self.warn_lbl.setText('Email-ID already present. Try another?')
+            self.warn_lbl.setText('Email-ID already exist')
             self.email.clear()
-            return
-
-        if register == "phone":
-            self.warn_lbl.setText('Phone Number already present. Try another?')
-            self.phone.clear()
             return
 
         if register == "reject":

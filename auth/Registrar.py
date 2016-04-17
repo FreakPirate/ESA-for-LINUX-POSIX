@@ -7,51 +7,47 @@ Scope: GUI implementation
 """
 import hashlib
 import salt
-import os.path
+import sqlite3 as sqlite
+import helper.FetchDB as fetch
 
-def add(username, email, phone, password, sec_ques, sec_ans, file_pass='passwd.lck', file_shadow='shadow.lck'):
+def add(username, email, phone, password, sec_ques, sec_ans, database="./database/user.sqlite", table_names=["passwd", "shadow"]):
     # Adds a user name and password pair in the given file
     # It calculates the hash of entered password + generated salt combined
-    user_list = []
-    email_list = []
-    pass_list = []
-    phone_list = []
 
-    if os.path.isfile(file_pass):
-        user_list, pass_list = salt.process_passwd_file(file_pass)
+    ATTR_USER_NAME = "Name"
+    ATTR_EMAIL_ID = "EmailId"
 
-    if os.path.isfile(file_shadow):
-        email_list, phone_list = salt.process_shadow_file(file_shadow)
+    user_list = fetch.getColumnList(ATTR_USER_NAME, database, table_names[0])
+    email_list = fetch.getColumnList(ATTR_EMAIL_ID, database, table_names[1])
+
 
     if username in user_list:
         return "username"
     elif email in email_list:
         return "email"
-    elif phone in phone_list:
-        return "phone"
 
     salt_val = salt.generate()
     hash_val = salt_val + '$' + hashlib.sha224(salt_val + password).hexdigest()
 
+    conn = None
+
     try:
-        file_conn_p = open(file_pass, 'a')
-        file_conn_s = open(file_shadow, 'a')
+        conn = sqlite.connect(database)
+        cur = conn.cursor()
 
-        passwd_str = username + ':' + hash_val + '\n'
-        shadow_str = username + ':' + email + ':' + phone + ':' + sec_ques + ':' + sec_ans + '\n'
+        query = "INSERT"
+        cur.execute
 
-        file_conn_p.write(passwd_str)
-        file_conn_s.write(shadow_str)
 
-        file_conn_p.close()
-        file_conn_s.close()
-
-        return "accept"
-
-    except Exception as e:
+    except lite.Error, e:
+        print "Error %s:" % e.args[0]
+        if conn:
+            conn.close()
         return "reject"
-        print type(e)
-        print e.args
+
+    finally:
+        if conn:
+            conn.close()
 
 
 if __name__ == "__main__":
