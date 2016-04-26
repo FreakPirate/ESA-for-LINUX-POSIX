@@ -28,6 +28,7 @@ def add(username, email, phone, password, sec_ques, sec_ans, database="./databas
 
     salt_val = salt.generate()
     hash_val = salt_val + '$' + hashlib.sha224(salt_val + password).hexdigest()
+    privilege = "root"
 
     conn = None
 
@@ -35,9 +36,13 @@ def add(username, email, phone, password, sec_ques, sec_ans, database="./databas
         conn = sqlite.connect(database)
         cur = conn.cursor()
 
-        query = "INSERT"
-        cur.execute
+        query = '''INSERT INTO %s (Name, Password, Privilege) 
+                VALUES (%s, %s, %s)''' % table_names[0], username, hash_val, privilege
+        cur.execute(query)
 
+        query = '''INSERT INTO %s (EMailId, Phone, Question, Answer, PasswdId) 
+                VALUES (%s, %s, %s, %s, %s)''' % table_names[1], email, phone, sec_ques, sec_ans, 
+        cur.execute(query)
 
     except lite.Error, e:
         print "Error %s:" % e.args[0]

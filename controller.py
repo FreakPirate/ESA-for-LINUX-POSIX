@@ -43,19 +43,19 @@ def main():
             cur.execute("DROP TABLE IF EXISTS " + table_names[1])
 
             passwd_schema = '''CREATE TABLE %s
-                (Id     INT     PRIMARY KEY     NOT NULL,
+                (Id     INT     PRIMARY KEY     AUTOINCREMENT   NOT NULL,
                 Name    TEXT    NOT NULL,
                 Password    VARCHAR(100)    NOT NULL,
                 Privilege   TEXT    NOT NULL
                 )''' %table_names[0]
 
             shadow_schema = '''CREATE TABLE %s
-                (Id     INT     NOT NULL,
+                (Id     INT     AUTOINCREMENT   NOT NULL,
                 EmailId VARCHAR(20)     NOT NULL,
                 Phone   VARCHAR(20),
                 Question    VARCHAR(40) NOT NULL,
                 Answer  VARCHAR(100)    NOT NULL,
-                FOREIGN KEY(PASSWDID) REFERENCES passwd(Id)
+                FOREIGN KEY(PasswdId) REFERENCES passwd(Id)
                 )''' %table_names[1]
 
             cur.execute(passwd_schema)
