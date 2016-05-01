@@ -98,7 +98,7 @@ class RegisterDialog(QtGui.QDialog):
         sec_ans = str(self.sec_ans.text())
 
         if username == '' or email == '' or password == '' or re_password == '' or sec_ans == '':
-            self.warn_lbl.setText("(*) marked fields must be filled.")
+            self.warn_lbl.setText("(*) marked fields are mandatory.")
             return
 
         if password != re_password:

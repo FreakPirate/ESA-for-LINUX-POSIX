@@ -8,9 +8,9 @@ Scope: GUI implementation
 import hashlib
 import salt
 import sqlite3 as sqlite
-import helper.FetchDB as fetch
+import auth.helper.FetchDB as fetch
 
-def add(username, email, phone, password, sec_ques, sec_ans, database="./database/user.sqlite", table_names=["passwd", "shadow"]):
+def add(username, email, phone, password, sec_ques, sec_ans, database="/root/esa/database/user.db", table_names=["passwd", "shadow"]):
     # Adds a user name and password pair in the given file
     # It calculates the hash of entered password + generated salt combined
 
@@ -44,7 +44,7 @@ def add(username, email, phone, password, sec_ques, sec_ans, database="./databas
                 VALUES (%s, %s, %s, %s, %s)''' % table_names[1], email, phone, sec_ques, sec_ans, 
         cur.execute(query)
 
-    except lite.Error, e:
+    except sqlite.Error, e:
         print "Error %s:" % e.args[0]
         if conn:
             conn.close()

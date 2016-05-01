@@ -48,9 +48,9 @@ error1(){
 usage(){
 	echo "Usage: useradmin [options]"
 	echo "Options: "
-	printf "  add\t\t\t\tTo add a new user account\n"
-	printf "  delete\t\t\tTo delete an existing user account\n"
-	printf "  modify\t\t\tTo modify the properties of an existing user account\n\n"
+	printf "  useradd\t\t\t\tTo add a new user account\n"
+	printf "  userdel\t\t\tTo delete an existing user account\n"
+	printf "  usermod\t\t\tTo modify the properties of an existing user account\n\n"
 	printf "  -a, --account-name NAME\tUser name or Account name to Add|Delete|Modify\n"
 	printf "  -c, --comment COMMENT\t\tComment field of the account\n"
 	printf "  -d, --home-dir HOME_DIR\tHome directory of the account\n"
@@ -66,16 +66,18 @@ usage(){
 addUser(){
 	$COMMAND $U $USERID $G $GROUPID $C $COMMENT $D $HOMEDIR $S $SHELL $ACCOUNTNAME
 	[ ! -z $ACCOUNTNAME ] && [ ! -z $PASSWORD ] && echo -e "$PASSWORD\n$PASSWORD" | $PASSWD --stdin $ACCOUNTNAME
+	echo "user '$ACCOUNTNAME' added successfully!"
 }
 
 deleteUser(){
 	$COMMAND $R $ACCOUNTNAME
+	echo "user '$ACCOUNTNAME' deleted successfully!"
 }
 
 modifyUser(){
 	test $MODFLAG -eq 1 && $COMMAND $L $NEWLOGIN $U $USERID $G $GROUPID $C $COMMENT $S $SHELL $D $HOMEDIR $M $ACCOUNTNAME
 	[ ! -z $ACCOUNTNAME ] && [ ! -z $PASSWORD ] && echo -e "$PASSWORD\n$PASSWORD" | $PASSWD --stdin $ACCOUNTNAME
-	echo "Success"
+	echo "user details of '$ACCOUNTNAME' updated successfully!"
 }
 
 ### MAIN ###
@@ -87,16 +89,16 @@ fi
 
 while [ "$1" != "" ]; do
 	case $1 in
-		add )
-			[ "$2" != "delete" ] && [ "$2" != "modify" ] && COMMAND=$USERADD || error1
+		useradd )
+			[ "$2" != "userdel" ] && [ "$2" != "usermod" ] && COMMAND=$USERADD || error1
 			;;
 		
-		delete )
-			[ "$2" != "add" ] && [ "$2" != "modify" ] && COMMAND=$USERDEL || error1
+		userdel )
+			[ "$2" != "useradd" ] && [ "$2" != "usermod" ] && COMMAND=$USERDEL || error1
 			;;
 		
-		modify )
-			[ "$2" != "add" ] && [ "$2" != "delete" ] && COMMAND=$USERMOD || error1
+		usermod )
+			[ "$2" != "useradd" ] && [ "$2" != "userdel" ] && COMMAND=$USERMOD || error1
 			;;
 
 		-a | --account-name )
@@ -141,7 +143,7 @@ while [ "$1" != "" ]; do
 			;;
 
 		-p | --password )
-			P==$1
+			P=$1
 			shift
 			PASSWORD=$1
 			;;
