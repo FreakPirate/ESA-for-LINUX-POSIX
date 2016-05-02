@@ -79,7 +79,8 @@ class Example(QMainWindow):
         time_period_item = self.addParent(parent, column, 'Servers', 'confiure servers')
 
         self.addChild(clients_item, column, 'Add', 'Add a user')
-        self.addChild(clients_item, column, 'Update', 'Update user details')
+        self.addChild(clients_item, column, 'Update Details', 'Update user details')
+        self.addChild(clients_item, column, 'Update Password', 'Update user password')
         self.addChild(clients_item, column, 'Delete', 'Delete a user')
 
         self.addChild(vendors_item, column, 'Append', 'append a rule in firewall')
@@ -107,41 +108,73 @@ class Example(QMainWindow):
         return item
 
     def onItemClicked(self, item, column):
-        self.addWidgetTopRight(item.text(column))
-        
-        # if item.text(column) == 'Add':
-        #     self.addDescription(item.text(column))
-        # elif item.text(column) == 'Update':
-        #     self.addDescription(item.text(column))
-        # elif item.text(column) == 'Delete':
-        #     pass
-        # elif item.text(column) == 'Append':
-        #     pass
-        # elif item.text(column) == 'List':
-        #     pass
-        # elif item.text(column) == 'Drop':
-        #     pass
-        # elif item.text(column) == 'Samba':
-        #     pass
-        # elif item.text(column) == 'Apache Web Server':
-        #     pass
-        # elif item.text(column) == 'DNS':
-        #     pass
-        # elif item.text(column) == 'SSH':
-        #     pass
-        # elif item.text(column) == 'FTP':
-        #     pass
-        # elif item.text(column) == 'TELNET':
-        #     pass
-        # elif item.text(column) == 'User Administration':
-        #     pass
-        # elif item.text(column) == 'Firewall Rules':
-        #     pass
-        # elif item.text(column) == 'Servers':
-        #     pass
-        # else:
-        #     print "None", item.text(column)
-        #     pass
+        self.widgetCollection = None
+        self.widgetCollection = WidgetCreator(self.vBoxTop)
+
+        self.removeWidgetTopRight()
+
+        if item.text(column) == 'Add':
+            self.retrieved = self.fetchDescription('ADDING NEW USER')
+            self.widgetUserAdd()
+        elif item.text(column) == 'Update Details':
+            self.retrieved = self.fetchDescription('MODIFYING EXISTING USER')
+            self.widgetUserModDet()
+        elif item.text(column) == 'Update Password':
+            self.retrieved = self.fetchDescription('MODIFYING EXISTING USER')
+            self.widgetUserModPass()
+        elif item.text(column) == 'Delete':
+            self.retrieved = self.fetchDescription('DELETING EXISTING USER')
+            self.widgetUserDel()
+        elif item.text(column) == 'Append':
+            pass
+        elif item.text(column) == 'List':
+            pass
+        elif item.text(column) == 'Drop':
+            pass
+        elif item.text(column) == 'Samba':
+            pass
+        elif item.text(column) == 'Apache Web Server':
+            pass
+        elif item.text(column) == 'DNS':
+            pass
+        elif item.text(column) == 'SSH':
+            pass
+        elif item.text(column) == 'FTP':
+            pass
+        elif item.text(column) == 'TELNET':
+            pass
+        elif item.text(column) == 'User Administration':
+            pass
+        elif item.text(column) == 'Firewall Rules':
+            pass
+        elif item.text(column) == 'Servers':
+            pass
+        else:
+            print "None", item.text(column)
+            pass
+
+        self.addDescription("DESCRIPTION", self.retrieved[1])
+
+    def fetchDescription(self, cmd_title):
+        retrieved = None
+
+        try:
+            conn = sqlite3.connect('/root/esa/database/esa.db')
+            cur = conn.cursor()
+
+            query = 'SELECT CMD_NAME_RPM, DESCRIPTION FROM command_list WHERE CMD_TITLE = "%s"' %cmd_title
+            print query
+            cur.execute(query)
+
+            retrieved = cur.fetchone()
+
+        except sqlite3.Error, e:
+            print "Error %s:" % e.args[0]
+            sys.exit(1)
+        finally:
+            if conn:
+                conn.close()
+                return retrieved
 
     def addDescription(self, title, content):
         self.removeDescription()
@@ -168,43 +201,6 @@ class Example(QMainWindow):
                 # widget will be None if the item is a layout
                 widget.deleteLater()
 
-    def addWidgetTopRight(self, title):
-        
-        self.widgetCollection = None
-        
-        self.removeWidgetTopRight()
-        if title == 'Add':
-
-            try:
-                conn = sqlite3.connect('/root/esa/database/esa.db')
-                cur = conn.cursor()
-
-                command_title = 'ADDING NEW USER'
-                query = 'SELECT CMD_NAME_RPM, DESCRIPTION FROM command_list WHERE CMD_TITLE = "%s"' %command_title
-                print query
-                cur.execute(query)
-
-                self.retrieved = cur.fetchone()
-
-                self.addDescription("DESCRIPTION", self.retrieved[1])
-            except sqlite3.Error, e:
-                print "Error %s:" % e.args[0]
-                sys.exit(1)
-            finally:
-                if conn:
-                    conn.close()
-
-            self.widgetCollection = WidgetCreator(self.vBoxTop)
-            self.widgetCollection.widgetUserAdd()
-
-            button_box = QDialogButtonBox()
-            button_box.setStandardButtons(QDialogButtonBox.Save | QDialogButtonBox.Reset)
-            button_box.accepted.connect(self.slotAddUser)
-            button_box.button(QDialogButtonBox.Reset).clicked.connect(self.slotResetAddUser)
-
-            # self.layout.addStretch(3)
-            self.vBoxTop.addWidget(button_box)
-
     def removeWidgetTopRight(self):
         for cnt in reversed(range(self.vBoxTop.count())):
             # takeAt does both the jobs of itemAt and removeWidget
@@ -215,16 +211,55 @@ class Example(QMainWindow):
                 # widget will be None if the item is a layout
                 widget.deleteLater()
 
-    def slotAddUser(self):
+    def widgetUserAdd(self):
+        self.widgetCollection.widgetUserAdd()
+
+        button_box = QDialogButtonBox()
+        button_box.setStandardButtons(QDialogButtonBox.Save | QDialogButtonBox.Reset)
+        button_box.accepted.connect(self.slotUserAdd)
+        button_box.button(QDialogButtonBox.Reset).clicked.connect(self.slotResetUserAdd)
+
+        # self.layout.addStretch(3)
+        self.vBoxTop.addWidget(button_box)
+
+    def widgetUserModDet(self):
+        self.widgetCollection.widgetUserModDet()
+        
+        button_box = QDialogButtonBox()
+        button_box.setStandardButtons(QDialogButtonBox.Save | QDialogButtonBox.Reset)
+        button_box.accepted.connect(self.slotUserModDet)
+        button_box.button(QDialogButtonBox.Reset).clicked.connect(self.slotResetUserModDet)
+
+        self.vBoxTop.addWidget(button_box)
+
+    def widgetUserModPass(self):
+        self.widgetCollection.widgetUserModPass()
+        
+        button_box = QDialogButtonBox()
+        button_box.setStandardButtons(QDialogButtonBox.Save | QDialogButtonBox.Reset)
+        button_box.accepted.connect(self.slotUserModPass)
+        button_box.button(QDialogButtonBox.Reset).clicked.connect(self.slotResetUserModPass)
+
+        self.vBoxTop.addWidget(button_box)
+
+    def widgetUserDel(self):
+        self.widgetCollection.widgetUserDel()
+        
+        button_box = QDialogButtonBox()
+        button_box.setStandardButtons(QDialogButtonBox.Save)
+        button_box.accepted.connect(self.slotUserDel)
+
+        self.vBoxTop.addWidget(button_box)
+    
+    def slotUserAdd(self):
         username = str(self.widgetCollection.usernameLe.text())
         password = str(self.widgetCollection.passwordLe.text())
         comment = str(self.widgetCollection.commentLe.text())
         uid = str(self.widgetCollection.uidLe.text())
         gid = str(self.widgetCollection.gidLe.text())
         homedir = str(self.widgetCollection.homedirLe.text())
-        shell = str(self.widgetCollection.shellCb.currentText())
+        shell = str(self.widgetCollection.shellCB.currentText())
 
-        homedir = '/home/' + homedir
         if username == '' or password == '':
             self.widgetCollection.warn_lbl.setText("(*) marked fields are mandatory.")
             return
@@ -240,6 +275,7 @@ class Example(QMainWindow):
             switch_c = '-c'
         if homedir != '':
             switch_d = '-d'
+            homedir = '/home/' + homedir
         if gid != '':
             switch_g = '-g'
         if uid != '':
@@ -255,7 +291,8 @@ class Example(QMainWindow):
 
         print script
         call(script, shell=True)
-
+        
+        fo = None
         if os.stat(error_log).st_size == 0:
             if os.stat(output_log).st_size == 0:
                 self.addDescription("OUTPUT", "No output")
@@ -266,7 +303,169 @@ class Example(QMainWindow):
             fo = open(error_log, 'r')
             self.addDescription("ERROR", fo.read())
 
-    def slotResetAddUser(self):
+        fo.close()
+        
+    def slotUserModDet(self):
+        username = str(self.widgetCollection.usernameCB.currentText())
+        newusername = str(self.widgetCollection.newUserNameLe.text())
+        comment = str(self.widgetCollection.commentLe.text())
+        uid = str(self.widgetCollection.uidLe.text())
+        gid = str(self.widgetCollection.gidLe.text())
+        homedir = str(self.widgetCollection.homedirLe.text())
+        shell = str(self.widgetCollection.shellCB.currentText())
+
+        if username == '' or username == 'None':
+            self.widgetCollection.warn_lbl.setText("(*) marked fields are mandatory.")
+            return
+
+        command_path = "/root/esa/scripts/shell/useradmin"
+
+        switch_c = ''
+        switch_d = ''
+        switch_g = ''
+        switch_u = ''
+        switch_l = ''
+
+        if comment != '':
+            switch_c = '-c'
+        if homedir != '':
+            switch_d = '-d'
+            homedir = '/home/' + homedir
+        if gid != '':
+            switch_g = '-g'
+        if uid != '':
+            switch_u = '-u'
+        if newusername != '':
+            switch_l = '-l'
+
+        error_log = "/tmp/error.log"
+        output_log = "/tmp/output.log"
+        command = self.retrieved[0]
+
+        script = "%s %s -a %s %s %s %s %s %s %s -s %s %s %s %s %s 2>%s >%s" \
+                 % (command_path,command,username,switch_c,comment,switch_d,homedir,
+                    switch_g,gid,shell,switch_u,uid,switch_l,newusername,error_log,output_log)
+
+        print script
+        call(script, shell=True)
+        
+        fo = None
+        if os.stat(error_log).st_size == 0:
+            if os.stat(output_log).st_size == 0:
+                self.addDescription("OUTPUT", "No output")
+            else:
+                fo = open(output_log, 'r')
+                self.addDescription("OUTPUT", fo.read())
+        else:
+            fo = open(error_log, 'r')
+            self.addDescription("ERROR", fo.read())
+
+        fo.close()
+
+        self.refreshUserNameCB()
+        
+    def slotUserModPass(self):
+        username = str(self.widgetCollection.usernameCB.currentText())
+        oldpass = str(self.widgetCollection.oldPassLe.text())
+        newpass = str(self.widgetCollection.newPassLe.text())
+        confirmpass = str(self.widgetCollection.confirmPassLe.text())
+
+        if username == '' or username == 'None' or oldpass == '' or newpass == '' or confirmpass == '':
+            self.widgetCollection.warn_lbl.setText("(*) marked fields are mandatory.")
+            return
+
+        if newpass != confirmpass:
+            self.widgetCollection.warn_lbl.setText('Passwords does not match.')
+            self.slotResetUserModPass()
+            return
+
+        command_path = "/usr/bin/passwd"
+
+        error_log = "/tmp/error.log"
+        output_log = "/tmp/output.log"
+
+        script = "echo -e \"%s\n%s\" | %s --stdin %s 2>%s >%s" %(newpass, newpass, command_path, username, error_log, output_log)
+        print script
+        call(script, shell=True)
+        
+        fo = None
+        if os.stat(error_log).st_size == 0:
+            if os.stat(output_log).st_size == 0:
+                self.addDescription("OUTPUT", "No output")
+            else:
+                fo = open(output_log, 'r')
+                self.addDescription("OUTPUT", fo.read())
+        else:
+            fo = open(error_log, 'r')
+            self.addDescription("ERROR", fo.read())
+
+        fo.close()
+
+        self.refreshUserNameCB()
+        
+    def slotUserDel(self):
+        username = str(self.widgetCollection.usernameCB.currentText())
+        type = str(self.widgetCollection.typeCB.currentText())
+
+        if username == '' or username == 'None':
+            self.widgetCollection.warn_lbl.setText("(*) marked fields are mandatory.")
+            return
+
+        command_path = "/root/esa/scripts/shell/useradmin"
+
+        switch_r = ''
+
+        if type == 'Recursive':
+            switch_r = '-r'
+        elif type == 'Normal':
+            switch_r = ''
+        else:
+            print "Error with 'typeCB'"
+
+        error_log = "/tmp/error.log"
+        output_log = "/tmp/output.log"
+        command = self.retrieved[0]
+
+        script = "%s %s %s -a %s 2>%s >%s" \
+                 %(command_path, command, switch_r, username, error_log, output_log)
+
+        print script
+        call(script, shell=True)
+        
+        fo = None
+        if os.stat(error_log).st_size == 0:
+            if os.stat(output_log).st_size == 0:
+                self.addDescription("OUTPUT", "No output")
+            else:
+                fo = open(output_log, 'r')
+                self.addDescription("OUTPUT", fo.read())
+        else:
+            fo = open(error_log, 'r')
+            self.addDescription("ERROR", fo.read())
+
+        fo.close()
+
+        self.refreshUserNameCB()
+
+    def refreshUserNameCB(self):
+        self.widgetCollection.usernameCB.clear()
+        item_count = self.widgetCollection.usernameCB.count()
+        for i in range(item_count):
+            self.widgetCollection.usernameCB.removeItem(i)
+
+        user_log = '/tmp/user.log'
+        script = "awk  -F':' '$3>999 {print $1}' /etc/passwd | grep -v nobody >%s" %user_log
+        call(script, shell=True)
+
+        fo = open(user_log, 'r')
+        data = fo.read().split('\n')
+        self.widgetCollection.usernameCB.addItem('None')
+        for i in reversed(data):
+            if i != '':
+                self.widgetCollection.usernameCB.addItem(i)
+        fo.close()
+
+    def slotResetUserAdd(self):
         self.widgetCollection.usernameLe.clear()
         self.widgetCollection.passwordLe.clear()
         self.widgetCollection.commentLe.clear()
@@ -274,6 +473,17 @@ class Example(QMainWindow):
         self.widgetCollection.uidLe.clear()
         self.widgetCollection.gidLe.clear()
 
+    def slotResetUserModDet(self):
+        self.widgetCollection.newUserNameLe.clear()
+        self.widgetCollection.commentLe.clear()
+        self.widgetCollection.homedirLe.clear()
+        self.widgetCollection.uidLe.clear()
+        self.widgetCollection.gidLe.clear()
+
+    def slotResetUserModPass(self):
+        self.widgetCollection.oldPassLe.clear()
+        self.widgetCollection.newPassLe.clear()
+        self.widgetCollection.confirmPassLe.clear()
 
 
 def main():

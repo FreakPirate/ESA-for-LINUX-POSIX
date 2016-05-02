@@ -2,13 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="444b32da-e226-4e52-acd0-93827696df52" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gitignore" afterPath="$PROJECT_DIR$/.gitignore" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/ESA-for-LINUX-POSIX.iml" afterPath="$PROJECT_DIR$/.idea/ESA-for-LINUX-POSIX.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/misc.xml" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/auth/RegisterDialog.py" afterPath="$PROJECT_DIR$/auth/RegisterDialog.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/auth/Registrar.py" afterPath="$PROJECT_DIR$/auth/Registrar.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/scripts/shell/useradmin" afterPath="$PROJECT_DIR$/scripts/shell/useradmin" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/main_window/WidgetCreator.py" afterPath="$PROJECT_DIR$/main_window/WidgetCreator.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/main_window/main_window.py" afterPath="$PROJECT_DIR$/main_window/main_window.py" />
     </list>
     <ignored path="ESA-for-LINUX-POSIX.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -23,7 +19,7 @@
   <component name="ChangesViewManager" flattened_view="true" show_ignored="false" />
   <component name="CoverageDataManager">
     <SUITE FILE_PATH="coverage/ESA-for-LINUX-POSIX$splashScreen.coverage" NAME="splashScreen Coverage Results" MODIFIED="1451674282012" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/ESA-for-LINUX-POSIX$main_window.coverage" NAME="main_window Coverage Results" MODIFIED="1462126161579" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/main_window" />
+    <SUITE FILE_PATH="coverage/ESA-for-LINUX-POSIX$main_window.coverage" NAME="main_window Coverage Results" MODIFIED="1462185955032" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/main_window" />
     <SUITE FILE_PATH="coverage/ESA-for-LINUX-POSIX$inception.coverage" NAME="inception Coverage Results" MODIFIED="1451674827226" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/ESA-for-LINUX-POSIX$LoginDialog.coverage" NAME="LoginDialog Coverage Results" MODIFIED="1451733016835" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/auth" />
   </component>
@@ -51,12 +47,23 @@
       <file leaf-file-name="main_window.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/main_window/main_window.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.027985075">
-              <caret line="196" column="18" selection-start-line="196" selection-start-column="18" selection-end-line="196" selection-end-column="18" />
+            <state vertical-scroll-proportion="0.34383956">
+              <caret line="281" column="27" selection-start-line="281" selection-start-column="27" selection-end-line="281" selection-end-column="27" />
               <folding>
                 <element signature="e#44#53#0" expanded="true" />
-                <marker date="1462126159101" expanded="true" signature="6219:6289" placeholder="SELECT CMD_N... command_list" />
-                <marker date="1462126159101" expanded="true" signature="6219:6292" placeholder="SELECT CMD_N... command_list" />
+                <marker date="1462185955026" expanded="true" signature="5786:5859" placeholder="SELECT CMD_N... command_list" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="WidgetCreator.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/main_window/WidgetCreator.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="66" column="18" selection-start-line="55" selection-start-column="8" selection-end-line="66" selection-end-column="18" />
+              <folding>
+                <element signature="e#43#68#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -96,7 +103,7 @@
         <entry file="file://$PROJECT_DIR$/scripts/shell/useradmin">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="79" column="39" selection-start-line="79" selection-start-column="39" selection-end-line="79" selection-end-column="39" />
+              <caret line="66" column="16" selection-start-line="66" selection-start-column="16" selection-end-line="66" selection-end-column="16" />
               <folding />
             </state>
           </provider>
@@ -109,18 +116,6 @@
               <caret line="120" column="18" selection-start-line="120" selection-start-column="18" selection-end-line="120" selection-end-column="18" />
               <folding>
                 <element signature="e#0#10#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="WidgetCreator.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/main_window/WidgetCreator.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="51" column="41" selection-start-line="51" selection-start-column="41" selection-end-line="51" selection-end-column="41" />
-              <folding>
-                <element signature="e#43#68#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -185,11 +180,11 @@
         <option value="$PROJECT_DIR$/auth/LoginDialog.py" />
         <option value="$PROJECT_DIR$/inception.py" />
         <option value="$PROJECT_DIR$/auth/RegisterDialog.py" />
-        <option value="$PROJECT_DIR$/main_window/WidgetCreator.py" />
         <option value="$PROJECT_DIR$/auth/helper/__init__.py" />
         <option value="$PROJECT_DIR$/auth/Registrar.py" />
-        <option value="$PROJECT_DIR$/main_window/main_window.py" />
         <option value="$PROJECT_DIR$/scripts/shell/useradmin" />
+        <option value="$PROJECT_DIR$/main_window/WidgetCreator.py" />
+        <option value="$PROJECT_DIR$/main_window/main_window.py" />
       </list>
     </option>
   </component>
@@ -321,7 +316,7 @@
   <component name="PropertiesComponent">
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
+    <property name="settings.editor.selected.configurable" value="editor.preferences.appearance" />
     <property name="settings.editor.splitter.proportion" value="0.2" />
     <property name="js-jscs-nodeInterpreter" value="C:\Program Files\nodejs\node.exe" />
   </component>
@@ -634,16 +629,17 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="6" y="28" width="1346" height="688" extended-state="1" />
+    <frame x="6" y="28" width="1346" height="688" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.27827382" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3291367" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3298791" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32864675" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3291367" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3291367" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32864675" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32864675" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.2496112" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3291367" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
@@ -653,7 +649,6 @@
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3291367" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
     </layout>
   </component>
@@ -681,8 +676,7 @@
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
             <element signature="e#44#53#0" expanded="true" />
-            <marker date="1462126159101" expanded="true" signature="6219:6289" placeholder="SELECT CMD_N... command_list" />
-            <marker date="1462126159101" expanded="true" signature="6219:6292" placeholder="SELECT CMD_N... command_list" />
+            <marker date="1462185955026" expanded="true" signature="5786:5859" placeholder="SELECT CMD_N... command_list" />
           </folding>
         </state>
       </provider>
@@ -711,9 +705,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="50" column="0" selection-start-line="50" selection-start-column="0" selection-end-line="50" selection-end-column="0" />
-          <folding>
-            <element signature="e#136#150#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -781,9 +772,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="50" column="0" selection-start-line="50" selection-start-column="0" selection-end-line="50" selection-end-column="0" />
-          <folding>
-            <element signature="e#136#150#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -841,9 +829,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="50" column="0" selection-start-line="50" selection-start-column="0" selection-end-line="50" selection-end-column="0" />
-          <folding>
-            <element signature="e#136#150#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -901,9 +886,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="50" column="0" selection-start-line="50" selection-start-column="0" selection-end-line="50" selection-end-column="0" />
-          <folding>
-            <element signature="e#136#150#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -961,9 +943,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="50" column="0" selection-start-line="50" selection-start-column="0" selection-end-line="50" selection-end-column="0" />
-          <folding>
-            <element signature="e#136#150#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1001,9 +980,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="11" column="0" selection-start-line="11" selection-start-column="0" selection-end-line="11" selection-end-column="0" />
-          <folding>
-            <element signature="e#136#150#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1053,9 +1029,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="21" column="0" selection-start-line="21" selection-start-column="0" selection-end-line="21" selection-end-column="0" />
-          <folding>
-            <element signature="e#136#150#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1063,9 +1036,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="50" column="0" selection-start-line="50" selection-start-column="0" selection-end-line="50" selection-end-column="0" />
-          <folding>
-            <element signature="e#136#150#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1076,14 +1046,6 @@
           <folding>
             <element signature="e#158#171#0" expanded="true" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/widgets/MainWindow.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="8" column="41" selection-start-line="8" selection-start-column="41" selection-end-line="8" selection-end-column="41" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1121,7 +1083,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1129,7 +1090,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1159,10 +1119,18 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/widgets/MainWindow.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="8" column="41" selection-start-line="8" selection-start-column="41" selection-end-line="8" selection-end-column="41" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/scripts/shell/useradmin">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="79" column="39" selection-start-line="79" selection-start-column="39" selection-end-line="79" selection-end-column="39" />
+          <caret line="66" column="16" selection-start-line="66" selection-start-column="16" selection-end-line="66" selection-end-column="16" />
           <folding />
         </state>
       </provider>
@@ -1170,7 +1138,7 @@
     <entry file="file://$PROJECT_DIR$/main_window/WidgetCreator.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="51" column="41" selection-start-line="51" selection-start-column="41" selection-end-line="51" selection-end-column="41" />
+          <caret line="66" column="18" selection-start-line="55" selection-start-column="8" selection-end-line="66" selection-end-column="18" />
           <folding>
             <element signature="e#43#68#0" expanded="true" />
           </folding>
@@ -1179,12 +1147,11 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/main_window/main_window.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.027985075">
-          <caret line="196" column="18" selection-start-line="196" selection-start-column="18" selection-end-line="196" selection-end-column="18" />
+        <state vertical-scroll-proportion="0.34383956">
+          <caret line="281" column="27" selection-start-line="281" selection-start-column="27" selection-end-line="281" selection-end-column="27" />
           <folding>
             <element signature="e#44#53#0" expanded="true" />
-            <marker date="1462126159101" expanded="true" signature="6219:6289" placeholder="SELECT CMD_N... command_list" />
-            <marker date="1462126159101" expanded="true" signature="6219:6292" placeholder="SELECT CMD_N... command_list" />
+            <marker date="1462185955026" expanded="true" signature="5786:5859" placeholder="SELECT CMD_N... command_list" />
           </folding>
         </state>
       </provider>
