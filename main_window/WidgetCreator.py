@@ -9,6 +9,9 @@ class WidgetCreator():
     def __init__(self, layout):
         self.layout = layout
 
+        self.warn_lbl = QLabel()
+        self.warn_lbl.setText('(*) Required fields')
+
     def widgetUserAdd(self):
 
         self.usernameLe = QLineEdit()
@@ -36,9 +39,6 @@ class WidgetCreator():
         for i in shells:
             if i != '':
                 self.shellCB.addItem(i)
-
-        self.warn_lbl = QLabel()
-        self.warn_lbl.setText('(*) Required fields')
 
         self.layout.addRow("Username*", self.usernameLe)
         self.layout.addRow("Password*", self.passwordLe)
@@ -90,9 +90,6 @@ class WidgetCreator():
             if i != '':
                 self.shellCB.addItem(i)
 
-        self.warn_lbl = QLabel()
-        self.warn_lbl.setText('(*) Required fields')
-
         self.layout.addRow("Username*", self.usernameCB)
         self.layout.addRow("New UserName", self.newUserNameLe)
         self.layout.addRow("Shells", self.shellCB)
@@ -128,9 +125,6 @@ class WidgetCreator():
         self.confirmPassLe = QLineEdit()
         self.confirmPassLe.setEchoMode(QLineEdit.Password)
 
-        self.warn_lbl = QLabel()
-        self.warn_lbl.setText('(*) Required fields')
-
         self.layout.addRow("Username*", self.usernameCB)
         self.layout.addRow("Old Password*", self.oldPassLe)
         self.layout.addRow("New Password*", self.newPassLe)
@@ -164,9 +158,6 @@ class WidgetCreator():
         self.normal_lbl = QLabel()
         self.normal_lbl.setText('Normal- Deleting user while keeping the home directory')
 
-        self.warn_lbl = QLabel()
-        self.warn_lbl.setText('(*) Required fields')
-
         self.layout.addRow("Username*", self.usernameCB)
         self.layout.addRow("Type*", self.typeCB)
         self.layout.addRow(self.recur_lbl)
@@ -174,3 +165,31 @@ class WidgetCreator():
         self.layout.addRow(self.warn_lbl)
 
         self.layout.setVerticalSpacing(10)
+
+    def widgetListAllZones(self):
+        self.zonesTitleLbl = QLabel()
+        self.zonesTitleLbl.setText("ZONES:")
+
+        self.zoneLbl = QLabel()
+
+        self.layout.addRow(self.zonesTitleLbl)
+        self.layout.addRow(self.zoneLbl)
+
+    def widgetLimitFtpConn(self):
+        self.connPerMinLe = QLineEdit()
+
+        self.actionCB = QComboBox()
+        self.actionCB.addItem('add')
+        self.actionCB.addItem('remove')
+
+        self.stateTypeCB = QComboBox()
+        self.stateTypeCB.addItem('permanent')
+        self.stateTypeCB.addItem('temporary')
+
+        self.zoneNameLe = QLineEdit()
+
+        self.layout.addRow('Number of connections per min*', self.connPerMinLe)
+        self.layout.addRow('Action*', self.actionCB)
+        self.layout.addRow('State*', self.stateTypeCB)
+        self.layout.addRow('Zone Name (optional)', self.zoneNameLe)
+        self.layout.addRow(self.warn_lbl)

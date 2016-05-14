@@ -9,10 +9,20 @@ from PyQt4.QtCore import *
 from WidgetCreator import WidgetCreator
 from subprocess import call
 import sqlite3
+from utility_description import *
+from utility_slots import Slots
 
 class Example(QMainWindow):
     def __init__(self):
         super(Example, self).__init__()
+        self.cmd_useradmin_path = "/esa/scripts/user/useradmin"
+        self.cmd_conn_limit_ftp = '/esa/scripts/firewall/rich_rules/connection_limit_ftp.sh'
+        self.cmd_list_rich_rules = '/esa/scripts/firewall/rich_rules/list_rich_rules.sh'
+        self.cmd_list_all_zones = '/esa/scripts/firewall/Zones/list_all_zones.sh'
+        self.cmd_passwd = '/usr/bin/passwd'
+
+        self.error_log = "/tmp/error.log"
+        self.output_log = "/tmp/output.log"
 
         self.initUI()
 
@@ -32,15 +42,27 @@ class Example(QMainWindow):
         self.vBoxTop = QFormLayout()
         self.topright.setLayout(self.vBoxTop)
 
+        top_scroll = QScrollArea()
+        top_scroll.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
+        top_scroll.setWidgetResizable(True)
+        top_scroll.setWidget(self.topright)
+
         self.bottomright = QFrame()
         self.bottomright.setFrameShape(QFrame.StyledPanel)
 
         self.vBoxBottom = QVBoxLayout()
         self.bottomright.setLayout(self.vBoxBottom)
 
+        #Scroll Area Properties
+        bottom_scroll = QScrollArea()
+        # scroll.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOn)
+        bottom_scroll.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
+        bottom_scroll.setWidgetResizable(True)
+        bottom_scroll.setWidget(self.bottomright)
+
         splitter1 = QSplitter(Qt.Vertical)
-        splitter1.addWidget(self.topright)
-        splitter1.addWidget(self.bottomright)
+        splitter1.addWidget(top_scroll)
+        splitter1.addWidget(bottom_scroll)
         splitter1.setSizes([200, 100])
 
         splitter2 = QSplitter(Qt.Horizontal)
@@ -54,7 +76,7 @@ class Example(QMainWindow):
 
         self.setCentralWidget(frameCentre)
 
-        exitAction = QAction(QIcon('exit24.png'), 'Exit', self)
+        exitAction = QAction(QIcon('exit.png'), 'Exit', self)
         exitAction.setShortcut('Ctrl+Q')
         exitAction.setStatusTip('Exit application')
         exitAction.triggered.connect(self.close)
@@ -74,25 +96,40 @@ class Example(QMainWindow):
 
     def addItems(self, parent):
         column = 0
-        clients_item = self.addParent(parent, column, 'User Administration', 'user admin')
-        vendors_item = self.addParent(parent, column, 'Firewall Rules', 'setup firewall')
-        time_period_item = self.addParent(parent, column, 'Servers', 'confiure servers')
+        user_administration = self.addParent(parent, column, 'User Administration', 'user admin')
+        firewall = self.addParent(parent, column, 'Firewall', 'setup firewall')
+        rich_rules = self.addParent(firewall, column, 'Rich Rules', 'Rich rule configuration')
+        zone_rules = self.addParent(firewall, column, 'Zone Rules', 'Zonal setup')
+        server = self.addParent(parent, column, 'Servers', 'confiure servers')
 
-        self.addChild(clients_item, column, 'Add', 'Add a user')
-        self.addChild(clients_item, column, 'Update Details', 'Update user details')
-        self.addChild(clients_item, column, 'Update Password', 'Update user password')
-        self.addChild(clients_item, column, 'Delete', 'Delete a user')
+        self.addChild(user_administration, column, 'Add', 'Add a user')
+        self.addChild(user_administration, column, 'Update Details', 'Update user details')
+        self.addChild(user_administration, column, 'Update Password', 'Update user password')
+        self.addChild(user_administration, column, 'Delete', 'Delete a user')
 
-        self.addChild(vendors_item, column, 'Append', 'append a rule in firewall')
-        self.addChild(vendors_item, column, 'List', 'list all rules in firewall')
-        self.addChild(vendors_item, column, 'Drop', 'drop rules')
+        self.addChild(firewall, column, 'Verify', 'Verify firewall installation')
 
-        self.addChild(time_period_item, column, 'Samba', 'configure samba server')
-        self.addChild(time_period_item, column, 'Apache Web Server', 'configure APACHE web server')
-        self.addChild(time_period_item, column, 'DNS', 'configure DNS server')
-        self.addChild(time_period_item, column, 'SSH', 'configure SSH server')
-        self.addChild(time_period_item, column, 'FTP', 'configure FTP server')
-        self.addChild(time_period_item, column, 'TELNET', 'configure TELNET server')
+        self.addChild(rich_rules, column, 'List', 'List all rich rules')
+        self.addChild(rich_rules, column, 'Limit FTP connection', 'Limiting FTP connections')
+        self.addChild(rich_rules, column, 'Port Forwading', 'forward port traffic')
+        self.addChild(rich_rules, column, 'Reject source traffic', 'Limiting FTP connections')
+
+        self.addChild(zone_rules, column, 'List all Zones', 'Add zone service')
+        self.addChild(zone_rules, column, 'List specific Zone', 'Add zone service')
+        self.addChild(zone_rules, column, 'Add Service', 'Add zone service')
+        self.addChild(zone_rules, column, 'Remove Service', 'Add zone service')
+        self.addChild(zone_rules, column, 'Add Source', 'Add zone service')
+        self.addChild(zone_rules, column, 'Get Service', 'Add zone service')
+        self.addChild(zone_rules, column, 'Remove Zone', 'Add zone service')
+        self.addChild(zone_rules, column, 'Set default Zone', 'Add zone service')
+        self.addChild(zone_rules, column, 'Get default Zone', 'Add zone service')
+
+        self.addChild(server, column, 'Samba', 'configure samba server')
+        self.addChild(server, column, 'Apache Web Server', 'configure APACHE web server')
+        self.addChild(server, column, 'DNS', 'configure DNS server')
+        self.addChild(server, column, 'SSH', 'configure SSH server')
+        self.addChild(server, column, 'FTP', 'configure FTP server')
+        self.addChild(server, column, 'TELNET', 'configure TELNET server')
 
     def addParent(self, parent, column, title, data):
         item = QTreeWidgetItem(parent, [title])
@@ -125,10 +162,12 @@ class Example(QMainWindow):
         elif item.text(column) == 'Delete':
             self.retrieved = self.fetchDescription('DELETING EXISTING USER')
             self.widgetUserDel()
-        elif item.text(column) == 'Append':
-            pass
-        elif item.text(column) == 'List':
-            pass
+        elif item.text(column) == 'List all Zones':
+            self.retrieved = self.fetchDescription('LIST ALL ZONES')
+            self.widgetListAllZones()
+        elif item.text(column) == 'Limit FTP connection':
+            self.retrieved = ['Limit FTP Connections', 'With this you can limit the number of requests to ftp server.']
+            self.widgetLimitFtpConn()
         elif item.text(column) == 'Drop':
             pass
         elif item.text(column) == 'Samba':
@@ -153,13 +192,13 @@ class Example(QMainWindow):
             print "None", item.text(column)
             pass
 
-        self.addDescription("DESCRIPTION", self.retrieved[1])
+        addDescription("DESCRIPTION", self.retrieved[1], self.vBoxBottom)
 
     def fetchDescription(self, cmd_title):
         retrieved = None
 
         try:
-            conn = sqlite3.connect('/root/esa/database/esa.db')
+            conn = sqlite3.connect('/esa/database/esa.db')
             cur = conn.cursor()
 
             query = 'SELECT CMD_NAME_RPM, DESCRIPTION FROM command_list WHERE CMD_TITLE = "%s"' %cmd_title
@@ -176,31 +215,6 @@ class Example(QMainWindow):
                 conn.close()
                 return retrieved
 
-    def addDescription(self, title, content):
-        self.removeDescription()
-        lbl_title = QLabel()
-        lbl_title.setText(title.upper())
-        lbl_title.setWordWrap(True)
-
-        lbl_content = QLabel()
-        lbl_content.setText(content)
-        lbl_content.setWordWrap(True)
-
-        self.vBoxBottom.addWidget(lbl_title)
-        self.vBoxBottom.addWidget(lbl_content)
-
-        # print self.vBoxBottom
-
-    def removeDescription(self):
-        for cnt in reversed(range(self.vBoxBottom.count())):
-            # takeAt does both the jobs of itemAt and removeWidget
-            # namely it removes an item and returns it
-            widget = self.vBoxBottom.takeAt(cnt).widget()
-
-            if widget is not None:
-                # widget will be None if the item is a layout
-                widget.deleteLater()
-
     def removeWidgetTopRight(self):
         for cnt in reversed(range(self.vBoxTop.count())):
             # takeAt does both the jobs of itemAt and removeWidget
@@ -214,277 +228,84 @@ class Example(QMainWindow):
     def widgetUserAdd(self):
         self.widgetCollection.widgetUserAdd()
 
+        slots = Slots(self.widgetCollection, self.retrieved, self.vBoxBottom)
+
         button_box = QDialogButtonBox()
         button_box.setStandardButtons(QDialogButtonBox.Save | QDialogButtonBox.Reset)
-        button_box.accepted.connect(self.slotUserAdd)
-        button_box.button(QDialogButtonBox.Reset).clicked.connect(self.slotResetUserAdd)
+        button_box.accepted.connect(slots.slotUserAdd)
+        button_box.button(QDialogButtonBox.Reset).clicked.connect(slots.slotResetUserAdd)
 
         # self.layout.addStretch(3)
         self.vBoxTop.addWidget(button_box)
 
     def widgetUserModDet(self):
         self.widgetCollection.widgetUserModDet()
-        
+
+        slots = Slots(self.widgetCollection, self.retrieved, self.vBoxBottom)
+
         button_box = QDialogButtonBox()
         button_box.setStandardButtons(QDialogButtonBox.Save | QDialogButtonBox.Reset)
-        button_box.accepted.connect(self.slotUserModDet)
-        button_box.button(QDialogButtonBox.Reset).clicked.connect(self.slotResetUserModDet)
+        button_box.accepted.connect(slots.slotUserModDet)
+        button_box.button(QDialogButtonBox.Reset).clicked.connect(slots.slotResetUserModDet)
 
         self.vBoxTop.addWidget(button_box)
 
     def widgetUserModPass(self):
         self.widgetCollection.widgetUserModPass()
-        
+
+        slots = Slots(self.widgetCollection, self.retrieved, self.vBoxBottom)
+
         button_box = QDialogButtonBox()
         button_box.setStandardButtons(QDialogButtonBox.Save | QDialogButtonBox.Reset)
-        button_box.accepted.connect(self.slotUserModPass)
-        button_box.button(QDialogButtonBox.Reset).clicked.connect(self.slotResetUserModPass)
+        button_box.accepted.connect(slots.slotUserModPass)
+        button_box.button(QDialogButtonBox.Reset).clicked.connect(slots.slotResetUserModPass)
 
         self.vBoxTop.addWidget(button_box)
 
     def widgetUserDel(self):
         self.widgetCollection.widgetUserDel()
-        
+
+        slots = Slots(self.widgetCollection, self.retrieved, self.vBoxBottom)
+
         button_box = QDialogButtonBox()
         button_box.setStandardButtons(QDialogButtonBox.Save)
-        button_box.accepted.connect(self.slotUserDel)
+        button_box.accepted.connect(slots.slotUserDel)
 
         self.vBoxTop.addWidget(button_box)
-    
-    def slotUserAdd(self):
-        username = str(self.widgetCollection.usernameLe.text())
-        password = str(self.widgetCollection.passwordLe.text())
-        comment = str(self.widgetCollection.commentLe.text())
-        uid = str(self.widgetCollection.uidLe.text())
-        gid = str(self.widgetCollection.gidLe.text())
-        homedir = str(self.widgetCollection.homedirLe.text())
-        shell = str(self.widgetCollection.shellCB.currentText())
 
-        if username == '' or password == '':
-            self.widgetCollection.warn_lbl.setText("(*) marked fields are mandatory.")
-            return
+    def widgetListAllZones(self):
+        self.widgetCollection.widgetListAllZones()
 
-        command_path = "/root/esa/scripts/shell/useradmin"
 
-        switch_c = ''
-        switch_d = ''
-        switch_g = ''
-        switch_u = ''
-
-        if comment != '':
-            switch_c = '-c'
-        if homedir != '':
-            switch_d = '-d'
-            homedir = '/home/' + homedir
-        if gid != '':
-            switch_g = '-g'
-        if uid != '':
-            switch_u = '-u'
-
-        error_log = "/tmp/error.log"
-        output_log = "/tmp/output.log"
-        command = self.retrieved[0]
-
-        script = "%s %s -a %s %s %s %s %s %s %s -p %s -s %s %s %s 2>%s >%s" \
-                 % (command_path,command,username,switch_c,comment,switch_d,homedir,
-                    switch_g,gid,password,shell,switch_u,uid,error_log,output_log)
+        script = "%s 2>%s >%s" %(self.cmd_list_all_zones, self.error_log, self.output_log)
 
         print script
+
         call(script, shell=True)
-        
-        fo = None
-        if os.stat(error_log).st_size == 0:
-            if os.stat(output_log).st_size == 0:
-                self.addDescription("OUTPUT", "No output")
+
+        if os.stat(self.error_log).st_size == 0:
+            if os.stat(self.output_log).st_size == 0:
+                self.widgetCollection.zoneLbl.setText("Error executing  command.")
             else:
-                fo = open(output_log, 'r')
-                self.addDescription("OUTPUT", fo.read())
+                fo = open(self.output_log, 'r')
+                self.widgetCollection.zoneLbl.setText(fo.read())
         else:
-            fo = open(error_log, 'r')
-            self.addDescription("ERROR", fo.read())
-
-        fo.close()
-        
-    def slotUserModDet(self):
-        username = str(self.widgetCollection.usernameCB.currentText())
-        newusername = str(self.widgetCollection.newUserNameLe.text())
-        comment = str(self.widgetCollection.commentLe.text())
-        uid = str(self.widgetCollection.uidLe.text())
-        gid = str(self.widgetCollection.gidLe.text())
-        homedir = str(self.widgetCollection.homedirLe.text())
-        shell = str(self.widgetCollection.shellCB.currentText())
-
-        if username == '' or username == 'None':
-            self.widgetCollection.warn_lbl.setText("(*) marked fields are mandatory.")
-            return
-
-        command_path = "/root/esa/scripts/shell/useradmin"
-
-        switch_c = ''
-        switch_d = ''
-        switch_g = ''
-        switch_u = ''
-        switch_l = ''
-
-        if comment != '':
-            switch_c = '-c'
-        if homedir != '':
-            switch_d = '-d'
-            homedir = '/home/' + homedir
-        if gid != '':
-            switch_g = '-g'
-        if uid != '':
-            switch_u = '-u'
-        if newusername != '':
-            switch_l = '-l'
-
-        error_log = "/tmp/error.log"
-        output_log = "/tmp/output.log"
-        command = self.retrieved[0]
-
-        script = "%s %s -a %s %s %s %s %s %s %s -s %s %s %s %s %s 2>%s >%s" \
-                 % (command_path,command,username,switch_c,comment,switch_d,homedir,
-                    switch_g,gid,shell,switch_u,uid,switch_l,newusername,error_log,output_log)
-
-        print script
-        call(script, shell=True)
-        
-        fo = None
-        if os.stat(error_log).st_size == 0:
-            if os.stat(output_log).st_size == 0:
-                self.addDescription("OUTPUT", "No output")
-            else:
-                fo = open(output_log, 'r')
-                self.addDescription("OUTPUT", fo.read())
-        else:
-            fo = open(error_log, 'r')
-            self.addDescription("ERROR", fo.read())
+            fo = open(self.error_log, 'r')
+            self.widgetCollection.zoneLbl.setText(fo.read())
 
         fo.close()
 
-        self.refreshUserNameCB()
-        
-    def slotUserModPass(self):
-        username = str(self.widgetCollection.usernameCB.currentText())
-        oldpass = str(self.widgetCollection.oldPassLe.text())
-        newpass = str(self.widgetCollection.newPassLe.text())
-        confirmpass = str(self.widgetCollection.confirmPassLe.text())
+    def widgetLimitFtpConn(self):
+        self.widgetCollection.widgetLimitFtpConn()
 
-        if username == '' or username == 'None' or oldpass == '' or newpass == '' or confirmpass == '':
-            self.widgetCollection.warn_lbl.setText("(*) marked fields are mandatory.")
-            return
+        slots = Slots(self.widgetCollection, self.retrieved, self.vBoxBottom)
 
-        if newpass != confirmpass:
-            self.widgetCollection.warn_lbl.setText('Passwords does not match.')
-            self.slotResetUserModPass()
-            return
+        button_box = QDialogButtonBox()
+        button_box.setStandardButtons(QDialogButtonBox.Save | QDialogButtonBox.Reset)
+        button_box.accepted.connect(slots.slotLimitFtpConn)
+        button_box.button(QDialogButtonBox.Reset).clicked.connect(slots.slotResetLimitFtpConn)
 
-        command_path = "/usr/bin/passwd"
-
-        error_log = "/tmp/error.log"
-        output_log = "/tmp/output.log"
-
-        script = "echo -e \"%s\n%s\" | %s --stdin %s 2>%s >%s" %(newpass, newpass, command_path, username, error_log, output_log)
-        print script
-        call(script, shell=True)
-        
-        fo = None
-        if os.stat(error_log).st_size == 0:
-            if os.stat(output_log).st_size == 0:
-                self.addDescription("OUTPUT", "No output")
-            else:
-                fo = open(output_log, 'r')
-                self.addDescription("OUTPUT", fo.read())
-        else:
-            fo = open(error_log, 'r')
-            self.addDescription("ERROR", fo.read())
-
-        fo.close()
-
-        self.refreshUserNameCB()
-        
-    def slotUserDel(self):
-        username = str(self.widgetCollection.usernameCB.currentText())
-        type = str(self.widgetCollection.typeCB.currentText())
-
-        if username == '' or username == 'None':
-            self.widgetCollection.warn_lbl.setText("(*) marked fields are mandatory.")
-            return
-
-        command_path = "/root/esa/scripts/shell/useradmin"
-
-        switch_r = ''
-
-        if type == 'Recursive':
-            switch_r = '-r'
-        elif type == 'Normal':
-            switch_r = ''
-        else:
-            print "Error with 'typeCB'"
-
-        error_log = "/tmp/error.log"
-        output_log = "/tmp/output.log"
-        command = self.retrieved[0]
-
-        script = "%s %s %s -a %s 2>%s >%s" \
-                 %(command_path, command, switch_r, username, error_log, output_log)
-
-        print script
-        call(script, shell=True)
-        
-        fo = None
-        if os.stat(error_log).st_size == 0:
-            if os.stat(output_log).st_size == 0:
-                self.addDescription("OUTPUT", "No output")
-            else:
-                fo = open(output_log, 'r')
-                self.addDescription("OUTPUT", fo.read())
-        else:
-            fo = open(error_log, 'r')
-            self.addDescription("ERROR", fo.read())
-
-        fo.close()
-
-        self.refreshUserNameCB()
-
-    def refreshUserNameCB(self):
-        self.widgetCollection.usernameCB.clear()
-        item_count = self.widgetCollection.usernameCB.count()
-        for i in range(item_count):
-            self.widgetCollection.usernameCB.removeItem(i)
-
-        user_log = '/tmp/user.log'
-        script = "awk  -F':' '$3>999 {print $1}' /etc/passwd | grep -v nobody >%s" %user_log
-        call(script, shell=True)
-
-        fo = open(user_log, 'r')
-        data = fo.read().split('\n')
-        self.widgetCollection.usernameCB.addItem('None')
-        for i in reversed(data):
-            if i != '':
-                self.widgetCollection.usernameCB.addItem(i)
-        fo.close()
-
-    def slotResetUserAdd(self):
-        self.widgetCollection.usernameLe.clear()
-        self.widgetCollection.passwordLe.clear()
-        self.widgetCollection.commentLe.clear()
-        self.widgetCollection.homedirLe.clear()
-        self.widgetCollection.uidLe.clear()
-        self.widgetCollection.gidLe.clear()
-
-    def slotResetUserModDet(self):
-        self.widgetCollection.newUserNameLe.clear()
-        self.widgetCollection.commentLe.clear()
-        self.widgetCollection.homedirLe.clear()
-        self.widgetCollection.uidLe.clear()
-        self.widgetCollection.gidLe.clear()
-
-    def slotResetUserModPass(self):
-        self.widgetCollection.oldPassLe.clear()
-        self.widgetCollection.newPassLe.clear()
-        self.widgetCollection.confirmPassLe.clear()
-
+        self.vBoxTop.addWidget(button_box)
 
 def main():
     app = QApplication(sys.argv)
