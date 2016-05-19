@@ -111,6 +111,58 @@ class WidgetCreator:
 
         self.vBoxTop.addWidget(button_box)
 
+    def widgetRemoveAcl(self):
+        self.widgetCollection.widgetRemoveAcl()
+
+        slotSave = lambda : self.slotRemoveAcl()
+        slotReset = lambda : self.slotResetRemoveAcl()
+
+        button_box = QDialogButtonBox()
+        button_box.setStandardButtons(QDialogButtonBox.Save | QDialogButtonBox.Reset)
+        button_box.button(QDialogButtonBox.Save).clicked.connect(slotSave)
+        button_box.button(QDialogButtonBox.Reset).clicked.connect(slotReset)
+
+        self.vBoxTop.addWidget(button_box)
+
+    def widgetSetAcl(self):
+        self.widgetCollection.widgetSetAcl()
+
+        slotSave = lambda : self.slotSetAcl(cmd_set_acl)
+        slotReset = lambda : self.slotResetSetAcl()
+
+        button_box = QDialogButtonBox()
+        button_box.setStandardButtons(QDialogButtonBox.Save | QDialogButtonBox.Reset)
+        button_box.button(QDialogButtonBox.Save).clicked.connect(slotSave)
+        button_box.button(QDialogButtonBox.Reset).clicked.connect(slotReset)
+
+        self.vBoxTop.addWidget(button_box)
+
+    def widgetSetDefaultDirAcl(self):
+        self.widgetCollection.widgetRemoveAcl()
+
+        slotSave = lambda : self.slotSetAcl(cmd_set_default_directory_acl)
+        slotReset = lambda : self.slotResetSetAcl()
+
+        button_box = QDialogButtonBox()
+        button_box.setStandardButtons(QDialogButtonBox.Save | QDialogButtonBox.Reset)
+        button_box.button(QDialogButtonBox.Save).clicked.connect(slotSave)
+        button_box.button(QDialogButtonBox.Reset).clicked.connect(slotReset)
+
+        self.vBoxTop.addWidget(button_box)
+
+    def widgetSetFromExistingAcl(self):
+        self.widgetCollection.widgetSetFromExistingAcl()
+
+        slotSave = lambda : self.slotSetFromExistingAcl()
+        slotReset = lambda : self.slotResetSetFromExistingAcl()
+
+        button_box = QDialogButtonBox()
+        button_box.setStandardButtons(QDialogButtonBox.Save | QDialogButtonBox.Reset)
+        button_box.button(QDialogButtonBox.Save).clicked.connect(slotSave)
+        button_box.button(QDialogButtonBox.Reset).clicked.connect(slotReset)
+
+        self.vBoxTop.addWidget(button_box)
+
     def slotUserAdd(self, description):
         username = str(self.widgetCollection.usernameLe.text())
         password = str(self.widgetCollection.passwordLe.text())
@@ -382,7 +434,6 @@ class WidgetCreator:
         output = ''
         detail = ''
 
-        fo = None
         if os.stat(error_log).st_size == 0:
             if os.stat(output_log).st_size == 0:
                 output = 'OUTPUT'
@@ -391,20 +442,141 @@ class WidgetCreator:
                 fo = open(output_log, 'r')
                 output = 'OUTPUT'
                 detail = fo.read()
+                fo.close()
         else:
             fo = open(error_log, 'r')
             output = 'ERROR'
             e = fo.read()
             fo = open(output_log, 'r')
             o = fo.read()
+            fo.close()
 
             detail = e + '\n\n' + o
 
         addDescription(output, detail, self.vBoxBottom)
-        fo.close()
 
-    def slotResetGetAcl(self):
-        self.widgetCollection.filenameLe.clear()
+    def slotRemoveAcl(self):
+        filename = str(self.widgetCollection.filenameLe.text())
+        username = str(self.widgetCollection.usernameCB.currentText())
+        ownertype = str(self.widgetCollection.ownerTypeCB.currentText())
+        directory = str(self.widgetCollection.directoryCB.currentText())
+
+        if filename == '' or filename == None:
+            self.widgetCollection.warn_lbl.setText("(*) marked fields are mandatory.")
+            return
+
+        if ownertype == 'User':
+            ownertype = 'u'
+        elif ownertype == 'Group':
+            ownertype = 'g'
+        elif ownertype == 'Others':
+            ownertype = 'o'
+
+        script = '%s %s %s %s %s 2>%s >%s' %(cmd_remove_acl, ownertype, username, filename, directory, error_log, output_log)
+        print script
+        call(script, shell=True)
+
+        output = ''
+        detail = ''
+
+        if os.stat(error_log).st_size == 0:
+            if os.stat(output_log).st_size == 0:
+                output, detail = getAcl(filename)
+            else:
+                fo = open(output_log, 'r')
+                output = 'OUTPUT'
+                detail = fo.read()
+                fo.close()
+        else:
+            fo = open(error_log, 'r')
+            output = 'ERROR'
+            e = fo.read()
+            fo = open(output_log, 'r')
+            o = fo.read()
+            fo.close()
+            detail = e + '\n\n' + o
+
+        addDescription(output, detail, self.vBoxBottom)
+
+    def slotSetAcl(self, command):
+        filename = str(self.widgetCollection.filenameLe.text())
+        username = str(self.widgetCollection.usernameCB.currentText())
+        ownertype = str(self.widgetCollection.ownerTypeCB.currentText())
+        directory = str(self.widgetCollection.directoryCB.currentText())
+        permission = str(self.widgetCollection.permissionLe.text())
+
+        if filename == '' or filename == None:
+            self.widgetCollection.warn_lbl.setText("(*) marked fields are mandatory.")
+            return
+
+        if ownertype == 'User':
+            ownertype = 'u'
+        elif ownertype == 'Group':
+            ownertype = 'g'
+        elif ownertype == 'Others':
+            ownertype = 'o'
+
+        script = '%s %s %s %s %s %s 2>%s >%s' %(command, ownertype, username, permission, filename, directory, error_log, output_log)
+        print script
+        call(script, shell=True)
+
+        output = ''
+        detail = ''
+
+        if os.stat(error_log).st_size == 0:
+            if os.stat(output_log).st_size == 0:
+                output, detail = getAcl(filename)
+            else:
+                fo = open(output_log, 'r')
+                output = 'OUTPUT'
+                detail = fo.read()
+                fo.close()
+        else:
+            fo = open(error_log, 'r')
+            output = 'ERROR'
+            e = fo.read()
+            fo = open(output_log, 'r')
+            o = fo.read()
+            fo.close()
+
+            detail = e + '\n\n' + o
+
+        addDescription(output, detail, self.vBoxBottom)
+
+    def slotSetFromExistingAcl(self):
+        sourcefile = str(self.widgetCollection.sourceFileLe.text())
+        targetfile = str(self.widgetCollection.targetFileLe.text())
+
+        if sourcefile == '' or sourcefile == None or targetfile == '' or targetfile == None:
+            self.widgetCollection.warn_lbl.setText("(*) marked fields are mandatory.")
+            return
+
+        script = '%s %s %s 2>%s >%s' %(cmd_set_from_existing_file, sourcefile, targetfile, error_log, output_log)
+        print script
+        call(script, shell=True)
+
+        output = ''
+        detail = ''
+
+        if os.stat(error_log).st_size == 0:
+            if os.stat(output_log).st_size == 0:
+                output, detail = getAcl(filename)
+            else:
+                fo = open(output_log, 'r')
+                output = 'OUTPUT'
+                detail = fo.read()
+                fo.close()
+        else:
+            fo = open(error_log, 'r')
+            output = 'ERROR'
+            e = fo.read()
+            fo = open(output_log, 'r')
+            o = fo.read()
+            fo.close()
+
+            detail = e + '\n\n' + o
+
+        addDescription(output, detail, self.vBoxBottom)
 
     def slotResetUserAdd(self):
         self.widgetCollection.usernameLe.clear()
@@ -423,9 +595,24 @@ class WidgetCreator:
 
     def slotResetUserModPass(self):
         self.widgetCollection.oldPassLe.clear()
+        refreshUserNameCB(self.widgetCollection)
         self.widgetCollection.newPassLe.clear()
         self.widgetCollection.confirmPassLe.clear()
 
     def slotResetLimitFtpConn(self):
         self.widgetCollection.connPerMinLe.clear()
         self.widgetCollection.zoneNameLe.clear()
+
+    def slotResetGetAcl(self):
+        self.widgetCollection.filenameLe.clear()
+
+    def slotResetRemoveAcl(self):
+        self.widgetCollection.filenameLe.clear()
+
+    def slotResetSetAcl(self):
+        self.widgetCollection.filenameLe.clear()
+        self.widgetCollection.permissionLe.clear()
+
+    def slotResetSetFromExistingAcl(self):
+        self.widgetCollection.sourceFileLe.clear()
+        self.widgetCollection.targetFileLe.clear()

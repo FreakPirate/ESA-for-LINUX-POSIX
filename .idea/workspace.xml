@@ -2,16 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="444b32da-e226-4e52-acd0-93827696df52" name="Default" comment="">
-      <change type="DELETED" beforePath="$PROJECT_DIR$/main_window/utility_slots.py" afterPath="" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/main_window/WidgetCreator.py" afterPath="$PROJECT_DIR$/main_window/UiCreator.py" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/main_window/utility_description.py" afterPath="$PROJECT_DIR$/main_window/Utility.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/main_window/UiCreator.py" afterPath="$PROJECT_DIR$/main_window/UiCreator.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/main_window/Utility.py" afterPath="$PROJECT_DIR$/main_window/Utility.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/main_window/WidgetCreator.py" afterPath="$PROJECT_DIR$/main_window/WidgetCreator.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/main_window/main_window.py" afterPath="$PROJECT_DIR$/main_window/main_window.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/scripts/acl/get_acl.sh" afterPath="$PROJECT_DIR$/scripts/acl/get_acl.sh" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/scripts/acl/remove_acl.sh" afterPath="$PROJECT_DIR$/scripts/acl/remove_acl.sh" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/scripts/acl/set_acl.sh" afterPath="$PROJECT_DIR$/scripts/acl/set_acl.sh" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/scripts/acl/set_default_directory_acl.sh" afterPath="$PROJECT_DIR$/scripts/acl/set_default_directory_acl.sh" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/scripts/acl/set_from_existing_file.sh" afterPath="$PROJECT_DIR$/scripts/acl/set_from_existing_file.sh" />
     </list>
     <ignored path="ESA-for-LINUX-POSIX.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -26,7 +20,7 @@
   <component name="ChangesViewManager" flattened_view="true" show_ignored="false" />
   <component name="CoverageDataManager">
     <SUITE FILE_PATH="coverage/ESA-for-LINUX-POSIX$splashScreen.coverage" NAME="splashScreen Coverage Results" MODIFIED="1451674282012" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/ESA-for-LINUX-POSIX$main_window.coverage" NAME="main_window Coverage Results" MODIFIED="1463665478619" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/main_window" />
+    <SUITE FILE_PATH="coverage/ESA-for-LINUX-POSIX$main_window.coverage" NAME="main_window Coverage Results" MODIFIED="1463672137375" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/main_window" />
     <SUITE FILE_PATH="coverage/ESA-for-LINUX-POSIX$inception.coverage" NAME="inception Coverage Results" MODIFIED="1451674827226" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/ESA-for-LINUX-POSIX$LoginDialog.coverage" NAME="LoginDialog Coverage Results" MODIFIED="1451733016835" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/auth" />
   </component>
@@ -39,11 +33,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="main_window.py" pinned="false" current-in-tab="false">
+      <file leaf-file-name="main_window.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/main_window/main_window.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="178" column="57" selection-start-line="178" selection-start-column="57" selection-end-line="178" selection-end-column="57" />
+            <state vertical-scroll-proportion="0.9056604">
+              <caret line="191" column="52" selection-start-line="191" selection-start-column="52" selection-end-line="191" selection-end-column="52" />
               <folding>
                 <element signature="e#44#53#0" expanded="true" />
               </folding>
@@ -61,11 +55,24 @@
           </provider>
         </entry>
       </file>
+      <file leaf-file-name="Utility.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/main_window/Utility.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="45" column="9" selection-start-line="45" selection-start-column="9" selection-end-line="45" selection-end-column="9" />
+              <folding>
+                <element signature="e#0#14#0" expanded="true" />
+                <marker date="1463672137369" expanded="true" signature="2330:2403" placeholder="SELECT CMD_N... command_list" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
       <file leaf-file-name="WidgetCreator.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/main_window/WidgetCreator.py">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="56" column="0" selection-start-line="56" selection-start-column="0" selection-end-line="56" selection-end-column="0" />
+              <caret line="496" column="22" selection-start-line="496" selection-start-column="22" selection-end-line="496" selection-end-column="22" />
               <folding>
                 <element signature="e#0#21#0" expanded="true" />
               </folding>
@@ -77,7 +84,7 @@
         <entry file="file://$PROJECT_DIR$/main_window/UiCreator.py">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="211" column="27" selection-start-line="211" selection-start-column="27" selection-end-line="211" selection-end-column="27" />
+              <caret line="269" column="61" selection-start-line="269" selection-start-column="61" selection-end-line="269" selection-end-column="61" />
               <folding>
                 <element signature="e#43#68#0" expanded="true" />
               </folding>
@@ -85,11 +92,21 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="remove_acl.sh" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/scripts/acl/remove_acl.sh">
+      <file leaf-file-name="set_default_directory_acl.sh" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/scripts/acl/set_default_directory_acl.sh">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="8" column="0" selection-start-line="8" selection-start-column="0" selection-end-line="8" selection-end-column="0" />
+              <caret line="19" column="49" selection-start-line="19" selection-start-column="49" selection-end-line="19" selection-end-column="49" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="set_from_existing_file.sh" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/scripts/acl/set_from_existing_file.sh">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="5" column="0" selection-start-line="5" selection-start-column="0" selection-end-line="5" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -98,48 +115,8 @@
       <file leaf-file-name="set_acl.sh" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/scripts/acl/set_acl.sh">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-3.6538463">
+            <state vertical-scroll-proportion="0.0">
               <caret line="19" column="47" selection-start-line="19" selection-start-column="47" selection-end-line="19" selection-end-column="47" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="set_default_directory_acl.sh" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/scripts/acl/set_default_directory_acl.sh">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-3.6538463">
-              <caret line="19" column="49" selection-start-line="19" selection-start-column="49" selection-end-line="19" selection-end-column="49" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="set_from_existing_file.sh" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/scripts/acl/set_from_existing_file.sh">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.1572327">
-              <caret line="5" column="0" selection-start-line="5" selection-start-column="0" selection-end-line="5" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="connection_limit_ftp.sh" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/scripts/firewall/rich_rules/connection_limit_ftp.sh">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="10" column="21" selection-start-line="10" selection-start-column="21" selection-end-line="10" selection-end-column="21" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="useradmin" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/scripts/user/useradmin">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="35" column="21" selection-start-line="35" selection-start-column="21" selection-end-line="35" selection-end-column="21" />
               <folding />
             </state>
           </provider>
@@ -177,16 +154,17 @@
         <option value="$PROJECT_DIR$/main_window/slots.py" />
         <option value="$PROJECT_DIR$/main_window/utility_description.py" />
         <option value="$PROJECT_DIR$/main_window/utility_slots.py" />
-        <option value="$PROJECT_DIR$/main_window/Utility.py" />
         <option value="$PROJECT_DIR$/scripts/acl/get_acl.sh" />
         <option value="$PROJECT_DIR$/scripts/acl/remove_acl.sh" />
-        <option value="$PROJECT_DIR$/main_window/WidgetCreator.py" />
         <option value="$PROJECT_DIR$/main_window/Constants.py" />
-        <option value="$PROJECT_DIR$/main_window/main_window.py" />
-        <option value="$PROJECT_DIR$/main_window/UiCreator.py" />
         <option value="$PROJECT_DIR$/scripts/acl/set_acl.sh" />
         <option value="$PROJECT_DIR$/scripts/acl/set_default_directory_acl.sh" />
         <option value="$PROJECT_DIR$/scripts/acl/set_from_existing_file.sh" />
+        <option value="$PROJECT_DIR$/main_window/UiCreator.py" />
+        <option value="$PROJECT_DIR$/main_window/main_window.py" />
+        <option value="$PROJECT_DIR$/main_window/__init__.py" />
+        <option value="$PROJECT_DIR$/main_window/WidgetCreator.py" />
+        <option value="$PROJECT_DIR$/main_window/Utility.py" />
       </list>
     </option>
   </component>
@@ -679,14 +657,14 @@
     <frame x="-1" y="28" width="1368" height="707" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.27306002" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.28343466" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3291367" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3298791" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3282313" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3291367" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3291367" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3265306" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3250444" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.2496112" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3291367" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
@@ -717,13 +695,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/widgets/MainWindow.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="8" column="41" selection-start-line="8" selection-start-column="41" selection-end-line="8" selection-end-column="41" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/auth/LoginDialog.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -1001,17 +972,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/main_window/Utility.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="38" column="0" selection-start-line="38" selection-start-column="0" selection-end-line="38" selection-end-column="0" />
-          <folding>
-            <element signature="e#0#14#0" expanded="true" />
-            <marker date="1463659234170" expanded="true" signature="1644:1717" placeholder="SELECT CMD_N... command_list" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/scripts/acl/get_acl.sh">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -1028,19 +988,9 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/main_window/main_window.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="178" column="57" selection-start-line="178" selection-start-column="57" selection-end-line="178" selection-end-column="57" />
-          <folding>
-            <element signature="e#44#53#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/scripts/acl/remove_acl.sh">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
+        <state vertical-scroll-proportion="0.21621622">
           <caret line="8" column="0" selection-start-line="8" selection-start-column="0" selection-end-line="8" selection-end-column="0" />
           <folding />
         </state>
@@ -1054,10 +1004,42 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/scripts/acl/set_acl.sh">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="19" column="47" selection-start-line="19" selection-start-column="47" selection-end-line="19" selection-end-column="47" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/scripts/acl/set_default_directory_acl.sh">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="19" column="49" selection-start-line="19" selection-start-column="49" selection-end-line="19" selection-end-column="49" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/scripts/acl/set_from_existing_file.sh">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="5" column="0" selection-start-line="5" selection-start-column="0" selection-end-line="5" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/main_window/__init__.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/main_window/WidgetCreator.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="56" column="0" selection-start-line="56" selection-start-column="0" selection-end-line="56" selection-end-column="0" />
+          <caret line="496" column="22" selection-start-line="496" selection-start-column="22" selection-end-line="496" selection-end-column="22" />
           <folding>
             <element signature="e#0#21#0" expanded="true" />
           </folding>
@@ -1067,34 +1049,31 @@
     <entry file="file://$PROJECT_DIR$/main_window/UiCreator.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="211" column="27" selection-start-line="211" selection-start-column="27" selection-end-line="211" selection-end-column="27" />
+          <caret line="269" column="61" selection-start-line="269" selection-start-column="61" selection-end-line="269" selection-end-column="61" />
           <folding>
             <element signature="e#43#68#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/scripts/acl/set_acl.sh">
+    <entry file="file://$PROJECT_DIR$/main_window/Utility.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-3.6538463">
-          <caret line="19" column="47" selection-start-line="19" selection-start-column="47" selection-end-line="19" selection-end-column="47" />
-          <folding />
+        <state vertical-scroll-proportion="0.0">
+          <caret line="45" column="9" selection-start-line="45" selection-start-column="9" selection-end-line="45" selection-end-column="9" />
+          <folding>
+            <element signature="e#0#14#0" expanded="true" />
+            <marker date="1463672137369" expanded="true" signature="2330:2403" placeholder="SELECT CMD_N... command_list" />
+          </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/scripts/acl/set_default_directory_acl.sh">
+    <entry file="file://$PROJECT_DIR$/main_window/main_window.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-3.6538463">
-          <caret line="19" column="49" selection-start-line="19" selection-start-column="49" selection-end-line="19" selection-end-column="49" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/scripts/acl/set_from_existing_file.sh">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.1572327">
-          <caret line="5" column="0" selection-start-line="5" selection-start-column="0" selection-end-line="5" selection-end-column="0" />
-          <folding />
+        <state vertical-scroll-proportion="0.9056604">
+          <caret line="191" column="52" selection-start-line="191" selection-start-column="52" selection-end-line="191" selection-end-column="52" />
+          <folding>
+            <element signature="e#44#53#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

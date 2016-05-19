@@ -54,6 +54,8 @@ class UiCreator():
     def widgetUserModDet(self):
         data = self.fetchNormalUsers()
 
+        self.usernameCB = QComboBox()
+        self.usernameCB.addItem('None')
         for i in reversed(data):
             if i != '':
                 self.usernameCB.addItem(i)
@@ -210,6 +212,77 @@ class UiCreator():
         self.layout.addRow(self.warn_lbl)
 
     def widgetSetAcl(self):
+        self.filenameLe = QLineEdit()
+        self.filenameLe.setPlaceholderText('Enter valid file name/path')
+
+        self.permissionLe = QLineEdit()
+        self.permissionLe.setPlaceholderText('rwx, rw, wx, rx, r, w, x')
+
+        self.ownerTypeCB = QComboBox()
+        self.ownerTypeCB.addItem('User')
+        self.ownerTypeCB.addItem('Group')
+        self.ownerTypeCB.addItem('Others')
+
+        data = self.fetchNormalUsers()
+
+        self.usernameCB = QComboBox()
+        self.usernameCB.addItem('None')
+        for i in reversed(data):
+            if i != '':
+                self.usernameCB.addItem(i)
+
+        self.directoryCB = QComboBox()
+        self.directoryCB.addItem('yes')
+        self.directoryCB.addItem('no')
+
+        self.layout.addRow('FileName*', self.filenameLe)
+        self.layout.addRow('Permissions', self.permissionLe)
+        self.layout.addRow('Owner Type', self.ownerTypeCB)
+        self.layout.addRow('User Name', self.usernameCB)
+        self.layout.addRow('Directory?', self.directoryCB)
+        self.layout.addRow(self.warn_lbl)
+
+    def widgetSetDefaultDirAcl(self):
+        self.filenameLe = QLineEdit()
+        self.filenameLe.setPlaceholderText('Enter valid file name/path')
+
+        self.permissionLe = QLineEdit()
+        self.permissionLe.setPlaceholderText('rwx, rw, wx, rx, r, w, x')
+
+        self.ownerTypeCB = QComboBox()
+        self.ownerTypeCB.addItem('User')
+        self.ownerTypeCB.addItem('Group')
+        self.ownerTypeCB.addItem('Others')
+
+        data = self.fetchNormalUsers()
+
+        self.usernameCB = QComboBox()
+        self.usernameCB.addItem('None')
+        for i in reversed(data):
+            if i != '':
+                self.usernameCB.addItem(i)
+
+        self.directoryCB = QComboBox()
+        self.directoryCB.addItem('yes')
+        self.directoryCB.addItem('no')
+
+        self.layout.addRow('FileName*', self.filenameLe)
+        self.layout.addRow('Permissions*', self.permissionLe)
+        self.layout.addRow('Owner Type', self.ownerTypeCB)
+        self.layout.addRow('User Name', self.usernameCB)
+        self.layout.addRow('Directory?', self.directoryCB)
+        self.layout.addRow(self.warn_lbl)
+
+    def widgetSetFromExistingAcl(self):
+        self.sourceFileLe = QLineEdit()
+        self.sourceFileLe.setPlaceholderText('Source file name/path')
+
+        self.targetFileLe = QLineEdit()
+        self.targetFileLe.setPlaceholderText('Target file name/path')
+
+        self.layout.addRow('Source File*', self.sourceFileLe)
+        self.layout.addRow('Target File*', self.targetFileLe)
+        self.layout.addRow(self.warn_lbl)
 
 
     def fetchNormalUsers(self):

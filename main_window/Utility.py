@@ -2,6 +2,8 @@ import sqlite3
 from subprocess import call
 from PyQt4.QtGui import *
 import sys
+from Constants import *
+import os
 
 def refreshUserNameCB(widgetCollection):
     widgetCollection.usernameCB.clear()
@@ -23,6 +25,34 @@ def refreshUserNameCB(widgetCollection):
         if i != '':
             widgetCollection.usernameCB.addItem(i)
     fo.close()
+
+def getAcl(filename):
+
+    script = "%s %s 2>%s >%s" %(cmd_get_acl, filename, error_log, output_log)
+    call(script, shell=True)
+
+    detail = ''
+    output = ''
+
+    if os.stat(error_log).st_size == 0:
+        if os.stat(output_log).st_size == 0:
+            output = 'OUTPUT'
+            detail = 'None'
+        else:
+            fo = open(output_log, 'r')
+            output = 'OUTPUT'
+            detail = fo.read()
+            fo.close()
+    else:
+        fo = open(error_log, 'r')
+        output = 'OUTPUT'
+        e = fo.read()
+        fo = open(output_log, 'r')
+        o = fo.read()
+        detail = e + '\n' + o
+
+    return output, detail
+
 
 def addDescription(title, content, vBoxBottom):
     removeDescription(vBoxBottom)

@@ -178,6 +178,18 @@ class Example(QMainWindow):
         elif item.text(column) == title_get_acl:
             self.description = ['', 'This script shows the already present Access Control List of the given file.']
             widgetCreator.widgetGetAcl()
+        elif item.text(column) == title_remove_acl:
+            self.description = ['', 'This script removes a specific rule from the ACL of a given file.']
+            widgetCreator.widgetRemoveAcl()
+        elif item.text(column) == title_set_acl:
+            self.description = ['', 'This script adds a specifie rule to the ACL of a given file.']
+            widgetCreator.widgetSetAcl()
+        elif item.text(column) == title_set_default_dir_acl:
+            self.description = ['', 'This script adds a default directory to the ACL path.']
+            widgetCreator.widgetSetDefaultDirAcl()
+        elif item.text(column) == title_set_from_existing_file:
+            self.description = ['', 'This script copies ACL rules of source file into ACL of target file.']
+            widgetCreator.widgetSetFromExistingAcl()
         elif item.text(column) == 'Drop':
             pass
         elif item.text(column) == 'Samba':
