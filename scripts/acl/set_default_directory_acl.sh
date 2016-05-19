@@ -8,16 +8,16 @@
 if [ $1 = u ]
 then
 
-[ $5 = yes ] && sudo setfacl -R -m d:$1:$2:$3 $4 || sudo setfacl -m d:$1:$2:$3 $4
+[ $5 = yes ] && setfacl -R -m d:$1:$2:$3 $4 || setfacl -m d:$1:$2:$3 $4
 
 elif [ $1 = g ]
 then
  
-[ $5 = yes ] && sudo setfacl -R -m d:$1:$2:$3 $4 || sudo setfacl -m d:$1:$2:$3 $4
+[ $5 = yes ] && setfacl -R -m d:$1:$2:$3 $4 || setfacl -m d:$1:$2:$3 $4
 
 else
 
-[ $5 = yes ] && sudo setfacl -R -m d:$1:$3 $4 || sudo setfacl -m d:$1:$3 $4 #( name of user set to be null in this case )
+[ $5 = yes ] && setfacl -R -m d:$1:$3 $4 || setfacl -m d:$1:$3 $4 #( name of user set to be null in this case )
  
 fi 
 

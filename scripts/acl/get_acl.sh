@@ -2,4 +2,4 @@
 
 #$1 = file/directory name
 
-sudo getfacl $1
+getfacl $1

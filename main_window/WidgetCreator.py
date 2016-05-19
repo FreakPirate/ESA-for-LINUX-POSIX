@@ -1,195 +1,431 @@
-#!/usr/bin/python
-# -*- coding: utf-8 -*-
-
+from Utility import *
 from PyQt4.QtGui import *
-from PyQt4.QtCore import *
-from subprocess import call
+import os
+from subprocess import  call
+from PyQt4 import QtCore
+from Constants import *
 
-class WidgetCreator():
-    def __init__(self, layout):
-        self.layout = layout
+class WidgetCreator:
+    def __init__(self, widgetCollection, vBoxTop, vBoxBottom):
+        
+        self.widgetCollection = widgetCollection
+        self.vBoxTop = vBoxTop
+        self.vBoxBottom = vBoxBottom
 
-        self.warn_lbl = QLabel()
-        self.warn_lbl.setText('(*) Required fields')
+    def widgetUserAdd(self, description):
+        self.widgetCollection.widgetUserAdd()
 
-    def widgetUserAdd(self):
+        slotSave = lambda : self.slotUserAdd(description)
+        slotReset = lambda : self.slotResetUserAdd()
 
-        self.usernameLe = QLineEdit()
+        button_box = QDialogButtonBox()
+        button_box.setStandardButtons(QDialogButtonBox.Save | QDialogButtonBox.Reset)
+        button_box.button(QDialogButtonBox.Save).clicked.connect(slotSave)
+        button_box.button(QDialogButtonBox.Reset).clicked.connect(slotReset)
 
-        self.passwordLe = QLineEdit()
-        self.passwordLe.setEchoMode(QLineEdit.Password)
+        # self.layout.addStretch(3)
+        self.vBoxTop.addWidget(button_box)
 
-        self.commentLe = QLineEdit()
+    def widgetUserModDet(self, description):
+        self.widgetCollection.widgetUserModDet()
 
-        self.homedirLe = QLineEdit()
-        self.homedirLe.setPlaceholderText("Enter path after /home")
+        slotSave = lambda : self.slotUserModDet(description)
+        slotReset = lambda : self.slotResetUserModDet()
 
-        self.uidLe = QLineEdit()
-        self.uidLe.setPlaceholderText("Default taken")
+        button_box = QDialogButtonBox()
+        button_box.setStandardButtons(QDialogButtonBox.Save | QDialogButtonBox.Reset)
+        button_box.button(QDialogButtonBox.Save).clicked.connect(slotSave)
+        button_box.button(QDialogButtonBox.Reset).clicked.connect(slotReset)
 
-        self.gidLe = QLineEdit()
-        self.gidLe.setPlaceholderText("Default taken")
-
-        fo = open('/etc/shells', 'r')
-        tmp = fo.read()
-        shells = tmp.split('\n')
-
-        self.shellCB = QComboBox()
-
-        for i in shells:
-            if i != '':
-                self.shellCB.addItem(i)
-
-        self.layout.addRow("Username*", self.usernameLe)
-        self.layout.addRow("Password*", self.passwordLe)
-        self.layout.addRow("Shells", self.shellCB)
-        self.layout.addRow("Comments", self.commentLe)
-        self.layout.addRow("Home Directory", self.homedirLe)
-        self.layout.addRow("Uid", self.uidLe)
-        self.layout.addRow("Gid", self.gidLe)
-        self.layout.addRow(self.warn_lbl)
-
-        self.layout.setVerticalSpacing(5)
-
-    def widgetUserModDet(self):
-
-        user_log = '/tmp/user.log'
-        script = "awk  -F':' '$3>999 {print $1}' /etc/passwd | grep -v nobody >%s" %user_log
-        call(script, shell=True)
-
-        fo = open(user_log, 'r')
-        data = fo.read().split('\n')
-        self.usernameCB = QComboBox()
-        self.usernameCB.addItem('None')
-        for i in reversed(data):
-            if i != '':
-                self.usernameCB.addItem(i)
-        fo.close()
-
-        self.newUserNameLe = QLineEdit()
-        self.newUserNameLe.setPlaceholderText("Enter new Login Name")
-
-        self.commentLe = QLineEdit()
-
-        self.homedirLe = QLineEdit()
-        self.homedirLe.setPlaceholderText("Enter path after /home")
-
-        self.uidLe = QLineEdit()
-        self.uidLe.setPlaceholderText("Default taken")
-
-        self.gidLe = QLineEdit()
-        self.gidLe.setPlaceholderText("Default taken")
-
-        fo = open('/etc/shells', 'r')
-        tmp = fo.read()
-        shells = tmp.split('\n')
-
-        self.shellCB = QComboBox()
-
-        for i in shells:
-            if i != '':
-                self.shellCB.addItem(i)
-
-        self.layout.addRow("Username*", self.usernameCB)
-        self.layout.addRow("New UserName", self.newUserNameLe)
-        self.layout.addRow("Shells", self.shellCB)
-        self.layout.addRow("Comments", self.commentLe)
-        self.layout.addRow("Home Directory", self.homedirLe)
-        self.layout.addRow("Uid", self.uidLe)
-        self.layout.addRow("Gid", self.gidLe)
-        self.layout.addRow(self.warn_lbl)
-
-        self.layout.setVerticalSpacing(7)
+        self.vBoxTop.addWidget(button_box)
 
     def widgetUserModPass(self):
+        self.widgetCollection.widgetUserModPass()
 
-        user_log = '/tmp/user.log'
-        script = "awk  -F':' '$3>999 {print $1}' /etc/passwd | grep -v nobody >%s" %user_log
-        call(script, shell=True)
+        slotSave = lambda : self.slotUserModPass()
+        slotReset = lambda : self.slotResetUserModPass()
 
-        fo = open(user_log, 'r')
-        data = fo.read().split('\n')
-        self.usernameCB = QComboBox()
-        self.usernameCB.addItem('None')
-        for i in reversed(data):
-            if i != '':
-                self.usernameCB.addItem(i)
-        fo.close()
+        button_box = QDialogButtonBox()
+        button_box.setStandardButtons(QDialogButtonBox.Save | QDialogButtonBox.Reset)
+        button_box.button(QDialogButtonBox.Save).clicked.connect(slotSave)
+        button_box.button(QDialogButtonBox.Reset).clicked.connect(slotReset)
 
-        self.oldPassLe = QLineEdit()
-        self.oldPassLe.setEchoMode(QLineEdit.Password)
+        self.vBoxTop.addWidget(button_box)
 
-        self.newPassLe = QLineEdit()
-        self.newPassLe.setEchoMode(QLineEdit.Password)
+    def widgetUserDel(self, description):
+        self.widgetCollection.widgetUserDel()
 
-        self.confirmPassLe = QLineEdit()
-        self.confirmPassLe.setEchoMode(QLineEdit.Password)
+        slotSave = lambda : self.slotUserDel(description)
 
-        self.layout.addRow("Username*", self.usernameCB)
-        self.layout.addRow("Old Password*", self.oldPassLe)
-        self.layout.addRow("New Password*", self.newPassLe)
-        self.layout.addRow("Confirm New Password*", self.confirmPassLe)
-        self.layout.addRow(self.warn_lbl)
+        button_box = QDialogButtonBox()
+        button_box.setStandardButtons(QDialogButtonBox.Save)
+        button_box.button(QDialogButtonBox.Save).clicked.connect(slotSave)
 
-        self.layout.setVerticalSpacing(10)
-
-    def widgetUserDel(self):
-
-        user_log = '/tmp/user.log'
-        script = "awk  -F':' '$3>999 {print $1}' /etc/passwd | grep -v nobody >%s" %user_log
-        call(script, shell=True)
-
-        fo = open(user_log, 'r')
-        data = fo.read().split('\n')
-        self.usernameCB = QComboBox()
-        self.usernameCB.addItem('None')
-        for i in reversed(data):
-            if i != '':
-                self.usernameCB.addItem(i)
-        fo.close()
-
-        self.typeCB = QComboBox()
-        self.typeCB.addItem('Recursive')
-        self.typeCB.addItem('Normal')
-
-        self.recur_lbl = QLabel()
-        self.recur_lbl.setText('Recursive- Delete user along with its home directory')
-
-        self.normal_lbl = QLabel()
-        self.normal_lbl.setText('Normal- Deleting user while keeping the home directory')
-
-        self.layout.addRow("Username*", self.usernameCB)
-        self.layout.addRow("Type*", self.typeCB)
-        self.layout.addRow(self.recur_lbl)
-        self.layout.addRow(self.normal_lbl)
-        self.layout.addRow(self.warn_lbl)
-
-        self.layout.setVerticalSpacing(10)
+        self.vBoxTop.addWidget(button_box)
 
     def widgetListAllZones(self):
-        self.zonesTitleLbl = QLabel()
-        self.zonesTitleLbl.setText("ZONES:")
+        self.widgetCollection.widgetListAllZones()
 
-        self.zoneLbl = QLabel()
 
-        self.layout.addRow(self.zonesTitleLbl)
-        self.layout.addRow(self.zoneLbl)
+        script = "%s 2>%s >%s" %(cmd_zone_list_zones, error_log, output_log)
+
+        print script
+
+        call(script, shell=True)
+
+        if os.stat(error_log).st_size == 0:
+            if os.stat(output_log).st_size == 0:
+                self.widgetCollection.zoneLbl.setText("Error executing  command.")
+            else:
+                fo = open(output_log, 'r')
+                self.widgetCollection.zoneLbl.setText(fo.read())
+                fo.close()
+        else:
+            fo = open(error_log, 'r')
+            self.widgetCollection.zoneLbl.setText(fo.read())
+            fo.close()
 
     def widgetLimitFtpConn(self):
-        self.connPerMinLe = QLineEdit()
+        self.widgetCollection.widgetLimitFtpConn()
 
-        self.actionCB = QComboBox()
-        self.actionCB.addItem('add')
-        self.actionCB.addItem('remove')
+        slotSave = lambda : self.slotLimitFtpConn()
+        slotReset = lambda : self.slotResetLimitFtpConn()
 
-        self.stateTypeCB = QComboBox()
-        self.stateTypeCB.addItem('permanent')
-        self.stateTypeCB.addItem('temporary')
+        button_box = QDialogButtonBox()
+        button_box.setStandardButtons(QDialogButtonBox.Save | QDialogButtonBox.Reset)
+        button_box.button(QDialogButtonBox.Save).clicked.connect(slotSave)
+        button_box.button(QDialogButtonBox.Reset).clicked.connect(slotReset)
 
-        self.zoneNameLe = QLineEdit()
+        self.vBoxTop.addWidget(button_box)
 
-        self.layout.addRow('Number of connections per min*', self.connPerMinLe)
-        self.layout.addRow('Action*', self.actionCB)
-        self.layout.addRow('State*', self.stateTypeCB)
-        self.layout.addRow('Zone Name (optional)', self.zoneNameLe)
-        self.layout.addRow(self.warn_lbl)
+    def widgetGetAcl(self):
+        self.widgetCollection.widgetGetAcl()
+
+        slotSave = lambda : self.slotGetAcl()
+        slotReset = lambda : self.slotResetGetAcl()
+
+        button_box = QDialogButtonBox()
+        button_box.setStandardButtons(QDialogButtonBox.Save | QDialogButtonBox.Reset)
+        button_box.button(QDialogButtonBox.Save).clicked.connect(slotSave)
+        button_box.button(QDialogButtonBox.Reset).clicked.connect(slotReset)
+
+        self.vBoxTop.addWidget(button_box)
+
+    def slotUserAdd(self, description):
+        username = str(self.widgetCollection.usernameLe.text())
+        password = str(self.widgetCollection.passwordLe.text())
+        comment = str(self.widgetCollection.commentLe.text())
+        uid = str(self.widgetCollection.uidLe.text())
+        gid = str(self.widgetCollection.gidLe.text())
+        homedir = str(self.widgetCollection.homedirLe.text())
+        shell = str(self.widgetCollection.shellCB.currentText())
+
+        if username == '' or password == '':
+            self.widgetCollection.warn_lbl.setText("(*) marked fields are mandatory.")
+            return
+
+
+
+        switch_c = ''
+        switch_d = ''
+        switch_g = ''
+        switch_u = ''
+
+        if comment != '':
+            switch_c = '-c'
+        if homedir != '':
+            switch_d = '-d'
+            homedir = '/home/' + homedir
+        if gid != '':
+            switch_g = '-g'
+        if uid != '':
+            switch_u = '-u'
+
+        command = description[0]
+
+        script = "%s %s -a %s %s %s %s %s %s %s -p %s -s %s %s %s 2>%s >%s" \
+                 % (cmd_useradmin_path,command,username,switch_c,comment,switch_d,homedir,
+                    switch_g,gid,password,shell,switch_u,uid,error_log,output_log)
+
+        # print script
+        call(script, shell=True)
+
+        output = ''
+        detail = ''
+
+        fo = None
+        if os.stat(error_log).st_size == 0:
+            if os.stat(output_log).st_size == 0:
+                output = 'OUTPUT'
+                detail = 'None'
+            else:
+                fo = open(output_log, 'r')
+                output = 'OUTPUT'
+                detail = fo.read()
+        else:
+            fo = open(error_log, 'r')
+            output = 'ERROR'
+            detail = fo.read()
+
+        addDescription(output, detail, self.vBoxBottom)
+
+        fo.close()
+
+    def slotUserModDet(self, description):
+        username = str(self.widgetCollection.usernameCB.currentText())
+        newusername = str(self.widgetCollection.newUserNameLe.text())
+        comment = str(self.widgetCollection.commentLe.text())
+        uid = str(self.widgetCollection.uidLe.text())
+        gid = str(self.widgetCollection.gidLe.text())
+        homedir = str(self.widgetCollection.homedirLe.text())
+        shell = str(self.widgetCollection.shellCB.currentText())
+
+        if username == '' or username == 'None':
+            self.widgetCollection.warn_lbl.setText("(*) marked fields are mandatory.")
+            return
+
+        switch_c = ''
+        switch_d = ''
+        switch_g = ''
+        switch_u = ''
+        switch_l = ''
+
+        if comment != '':
+            switch_c = '-c'
+        if homedir != '':
+            switch_d = '-d'
+            homedir = '/home/' + homedir
+        if gid != '':
+            switch_g = '-g'
+        if uid != '':
+            switch_u = '-u'
+        if newusername != '':
+            switch_l = '-l'
+
+        command = description[0]
+
+        script = "%s %s -a %s %s %s %s %s %s %s -s %s %s %s %s %s 2>%s >%s" \
+                 % (cmd_useradmin_path,command,username,switch_c,comment,switch_d,homedir,
+                    switch_g,gid,shell,switch_u,uid,switch_l,newusername,error_log,output_log)
+
+        print script
+        call(script, shell=True)
+
+        output = ''
+        detail = ''
+
+        fo = None
+        if os.stat(error_log).st_size == 0:
+            if os.stat(output_log).st_size == 0:
+                output = 'OUTPUT'
+                detail = 'None'
+            else:
+                fo = open(output_log, 'r')
+                output = 'OUTPUT'
+                detail = fo.read()
+        else:
+            fo = open(error_log, 'r')
+            output = 'ERROR'
+            detail = fo.read()
+
+        addDescription(output, detail, self.vBoxBottom)
+
+        fo.close()
+
+        refreshUserNameCB(self.widgetCollection)
+
+    def slotUserModPass(self):
+        username = str(self.widgetCollection.usernameCB.currentText())
+        oldpass = str(self.widgetCollection.oldPassLe.text())
+        newpass = str(self.widgetCollection.newPassLe.text())
+        confirmpass = str(self.widgetCollection.confirmPassLe.text())
+
+        if username == '' or username == 'None' or oldpass == '' or newpass == '' or confirmpass == '':
+            self.widgetCollection.warn_lbl.setText("(*) marked fields are mandatory.")
+            return
+
+        if newpass != confirmpass:
+            self.widgetCollection.warn_lbl.setText('Passwords does not match.')
+            self.slotResetUserModPass()
+            return
+
+
+        script = "echo -e \"%s\n%s\" | %s --stdin %s 2>%s >%s" %(newpass, newpass, cmd_passwd, username, error_log, output_log)
+        print script
+        call(script, shell=True)
+
+        fo = None
+        if os.stat(error_log).st_size == 0:
+            if os.stat(output_log).st_size == 0:
+                output = 'OUTPUT'
+                detail = 'None'
+            else:
+                fo = open(output_log, 'r')
+                output = 'OUTPUT'
+                detail = fo.read()
+        else:
+            fo = open(error_log, 'r')
+            output = 'ERROR'
+            detail = fo.read()
+
+        addDescription(output, detail, self.vBoxBottom)
+
+        fo.close()
+
+        refreshUserNameCB(self.widgetCollection)
+
+    def slotUserDel(self, description):
+        username = str(self.widgetCollection.usernameCB.currentText())
+        type = str(self.widgetCollection.typeCB.currentText())
+
+        if username == '' or username == 'None':
+            self.widgetCollection.warn_lbl.setText("(*) marked fields are mandatory.")
+            return
+
+        switch_r = ''
+
+        if type == 'Recursive':
+            switch_r = '-r'
+        elif type == 'Normal':
+            switch_r = ''
+        else:
+            print "Error with 'typeCB'"
+
+        command = description[0]
+
+        script = "%s %s %s -a %s 2>%s >%s" \
+                 %(cmd_useradmin_path, command, switch_r, username, error_log, output_log)
+
+        print script
+        call(script, shell=True)
+
+        fo = None
+        if os.stat(error_log).st_size == 0:
+            if os.stat(output_log).st_size == 0:
+                output = 'OUTPUT'
+                detail = 'None'
+            else:
+                fo = open(output_log, 'r')
+                output = 'OUTPUT'
+                detail = fo.read()
+        else:
+            fo = open(error_log, 'r')
+            output = 'ERROR'
+            detail = fo.read()
+
+        addDescription(output, detail, self.vBoxBottom)
+
+        fo.close()
+
+        refreshUserNameCB(self.widgetCollection)
+
+    def slotLimitFtpConn(self):
+        conn_per_min = str(self.widgetCollection.connPerMinLe.text())
+        action = str(self.widgetCollection.actionCB.currentText())
+        state = str(self.widgetCollection.stateTypeCB.currentText())
+        zone_name = str(self.widgetCollection.zoneNameLe.text())
+
+        if conn_per_min == '':
+            self.widgetCollection.warn_lbl.setText("(*) marked fields are mandatory.")
+            return
+
+        script = "%s %s %s %s %s 2>%s >%s" \
+                 %(cmd_rich_limit_ftp, conn_per_min, action, state, zone_name, error_log, output_log)
+
+        # print script
+        call(script, shell=True)
+
+        output = ''
+        fo = None
+        if os.stat(error_log).st_size == 0:
+            if os.stat(output_log).st_size == 0:
+                addDescription("OUTPUT", "No output", self.widgetCollection)
+                return
+            else:
+                fo = open(output_log, 'r')
+                output = fo.read()
+                # print output
+        else:
+            fo = open(error_log, 'r')
+            addDescription("ERROR", fo.read(), self.widgetCollection)
+            return
+
+        fo.close()
+
+        script = "%s 2>%s >%s" %(cmd_rich_list, error_log, output_log)
+        # print script
+        call(script, shell=True)
+
+        if os.stat(error_log).st_size == 0:
+            if os.stat(output_log).st_size == 0:
+                output = output + '\n\n' + 'RICH RULE ZONES:\n' + 'None'
+            else:
+                fo = open(output_log, 'r')
+                output = output + '\n\n' + 'RICH RULE ZONES:\n' + fo.read()
+        else:
+            fo = open(error_log, 'r')
+            output = output + '\n\n' + 'ERROR:\n' + fo.read()
+
+        addDescription("OUTPUT", output, self.widgetCollection)
+        fo.close()
+
+    def slotGetAcl(self):
+        filename = str(self.widgetCollection.filenameLe.text())
+
+        if filename == '' or filename == None:
+            self.widgetCollection.warn_lbl.setText("(*) marked fields are mandatory.")
+            return
+
+        script = '%s %s 2>%s >%s' %(cmd_get_acl, filename, error_log, output_log)
+        call(script, shell=True)
+
+        output = ''
+        detail = ''
+
+        fo = None
+        if os.stat(error_log).st_size == 0:
+            if os.stat(output_log).st_size == 0:
+                output = 'OUTPUT'
+                detail = 'None'
+            else:
+                fo = open(output_log, 'r')
+                output = 'OUTPUT'
+                detail = fo.read()
+        else:
+            fo = open(error_log, 'r')
+            output = 'ERROR'
+            e = fo.read()
+            fo = open(output_log, 'r')
+            o = fo.read()
+
+            detail = e + '\n\n' + o
+
+        addDescription(output, detail, self.vBoxBottom)
+        fo.close()
+
+    def slotResetGetAcl(self):
+        self.widgetCollection.filenameLe.clear()
+
+    def slotResetUserAdd(self):
+        self.widgetCollection.usernameLe.clear()
+        self.widgetCollection.passwordLe.clear()
+        self.widgetCollection.commentLe.clear()
+        self.widgetCollection.homedirLe.clear()
+        self.widgetCollection.uidLe.clear()
+        self.widgetCollection.gidLe.clear()
+
+    def slotResetUserModDet(self):
+        self.widgetCollection.newUserNameLe.clear()
+        self.widgetCollection.commentLe.clear()
+        self.widgetCollection.homedirLe.clear()
+        self.widgetCollection.uidLe.clear()
+        self.widgetCollection.gidLe.clear()
+
+    def slotResetUserModPass(self):
+        self.widgetCollection.oldPassLe.clear()
+        self.widgetCollection.newPassLe.clear()
+        self.widgetCollection.confirmPassLe.clear()
+
+    def slotResetLimitFtpConn(self):
+        self.widgetCollection.connPerMinLe.clear()
+        self.widgetCollection.zoneNameLe.clear()

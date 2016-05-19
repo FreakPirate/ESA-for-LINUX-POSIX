@@ -6,23 +6,18 @@ import os
 import sys
 from PyQt4.QtGui import *
 from PyQt4.QtCore import *
-from WidgetCreator import WidgetCreator
+from UiCreator import *
 from subprocess import call
 import sqlite3
-from utility_description import *
-from utility_slots import Slots
+from Utility import *
+from WidgetCreator import *
+from Constants import *
 
 class Example(QMainWindow):
     def __init__(self):
         super(Example, self).__init__()
-        self.cmd_useradmin_path = "/esa/scripts/user/useradmin"
-        self.cmd_conn_limit_ftp = '/esa/scripts/firewall/rich_rules/connection_limit_ftp.sh'
-        self.cmd_list_rich_rules = '/esa/scripts/firewall/rich_rules/list_rich_rules.sh'
-        self.cmd_list_all_zones = '/esa/scripts/firewall/Zones/list_all_zones.sh'
-        self.cmd_passwd = '/usr/bin/passwd'
 
-        self.error_log = "/tmp/error.log"
-        self.output_log = "/tmp/output.log"
+        self.description = None
 
         self.initUI()
 
@@ -98,8 +93,9 @@ class Example(QMainWindow):
         column = 0
         user_administration = self.addParent(parent, column, 'User Administration', 'user admin')
         firewall = self.addParent(parent, column, 'Firewall', 'setup firewall')
-        rich_rules = self.addParent(firewall, column, 'Rich Rules', 'Rich rule configuration')
-        zone_rules = self.addParent(firewall, column, 'Zone Rules', 'Zonal setup')
+        rich_rules = self.addParent(firewall, column, title_rich_rules, title_rich_rules)
+        zone_rules = self.addParent(firewall, column, title_zone_rules, title_zone_rules)
+        acl = self.addParent(parent, column, title_acl, title_acl)
         server = self.addParent(parent, column, 'Servers', 'confiure servers')
 
         self.addChild(user_administration, column, 'Add', 'Add a user')
@@ -109,20 +105,28 @@ class Example(QMainWindow):
 
         self.addChild(firewall, column, 'Verify', 'Verify firewall installation')
 
-        self.addChild(rich_rules, column, 'List', 'List all rich rules')
-        self.addChild(rich_rules, column, 'Limit FTP connection', 'Limiting FTP connections')
-        self.addChild(rich_rules, column, 'Port Forwading', 'forward port traffic')
-        self.addChild(rich_rules, column, 'Reject source traffic', 'Limiting FTP connections')
+        self.addChild(rich_rules, column, title_rich_limit_ftp, title_rich_limit_ftp)
+        self.addChild(rich_rules, column, title_rich_list, title_rich_limit_ftp)
+        self.addChild(rich_rules, column, title_rich_masquerade, title_rich_masquerade)
+        self.addChild(rich_rules, column, title_rich_port_forwading, title_rich_port_forwading)
+        self.addChild(rich_rules, column, title_rich_port_range, title_rich_port_range)
+        self.addChild(rich_rules, column, title_rich_reject_traffic, title_rich_reject_traffic)
 
-        self.addChild(zone_rules, column, 'List all Zones', 'Add zone service')
-        self.addChild(zone_rules, column, 'List specific Zone', 'Add zone service')
-        self.addChild(zone_rules, column, 'Add Service', 'Add zone service')
-        self.addChild(zone_rules, column, 'Remove Service', 'Add zone service')
-        self.addChild(zone_rules, column, 'Add Source', 'Add zone service')
-        self.addChild(zone_rules, column, 'Get Service', 'Add zone service')
-        self.addChild(zone_rules, column, 'Remove Zone', 'Add zone service')
-        self.addChild(zone_rules, column, 'Set default Zone', 'Add zone service')
-        self.addChild(zone_rules, column, 'Get default Zone', 'Add zone service')
+        self.addChild(zone_rules, column, title_zone_add_service, title_zone_add_service)
+        self.addChild(zone_rules, column, title_zone_add_source, title_zone_add_source)
+        self.addChild(zone_rules, column, title_zone_get_default_zone, title_zone_get_default_zone)
+        self.addChild(zone_rules, column, title_zone_get_services, title_zone_get_services)
+        self.addChild(zone_rules, column, title_zone_list_all, title_zone_list_all)
+        self.addChild(zone_rules, column, title_zone_list_zones, title_zone_list_zones)
+        self.addChild(zone_rules, column, title_zone_remove_service, title_zone_remove_service)
+        self.addChild(zone_rules, column, title_zone_remove_source, title_zone_remove_source)
+        self.addChild(zone_rules, column, title_zone_set_default_zone, title_zone_set_default_zone)
+
+        self.addChild(acl, column, title_get_acl, title_get_acl)
+        self.addChild(acl, column, title_remove_acl, title_remove_acl)
+        self.addChild(acl, column, title_set_acl, title_set_acl)
+        self.addChild(acl, column, title_set_default_dir_acl, title_set_default_dir_acl)
+        self.addChild(acl, column, title_set_from_existing_file, title_set_from_existing_file)
 
         self.addChild(server, column, 'Samba', 'configure samba server')
         self.addChild(server, column, 'Apache Web Server', 'configure APACHE web server')
@@ -131,14 +135,14 @@ class Example(QMainWindow):
         self.addChild(server, column, 'FTP', 'configure FTP server')
         self.addChild(server, column, 'TELNET', 'configure TELNET server')
 
-    def addParent(self, parent, column, title, data):
+    def addParent(self, parent, column, title, data=''):
         item = QTreeWidgetItem(parent, [title])
         item.setData(column, Qt.UserRole, data)
         item.setChildIndicatorPolicy(QTreeWidgetItem.ShowIndicator)
         item.setExpanded(True)
         return item
 
-    def addChild(self, parent, column, title, data):
+    def addChild(self, parent, column, title, data=''):
         item = QTreeWidgetItem(parent, [title])
         item.setData(column, Qt.UserRole, data)
         # item.setCheckState(column, Qt.Unchecked)
@@ -146,28 +150,34 @@ class Example(QMainWindow):
 
     def onItemClicked(self, item, column):
         self.widgetCollection = None
-        self.widgetCollection = WidgetCreator(self.vBoxTop)
+        self.widgetCollection = UiCreator(self.vBoxTop)
 
-        self.removeWidgetTopRight()
+        self.description = None
+        removeWidgetTopRight(self.vBoxTop)
+        
+        widgetCreator = WidgetCreator(self.widgetCollection, self.vBoxTop, self.vBoxBottom)
 
         if item.text(column) == 'Add':
-            self.retrieved = self.fetchDescription('ADDING NEW USER')
-            self.widgetUserAdd()
+            self.description = fetchDescription('ADDING NEW USER')
+            widgetCreator.widgetUserAdd(self.description)
         elif item.text(column) == 'Update Details':
-            self.retrieved = self.fetchDescription('MODIFYING EXISTING USER')
-            self.widgetUserModDet()
+            self.description = fetchDescription('MODIFYING EXISTING USER')
+            widgetCreator.widgetUserModDet(self.description)
         elif item.text(column) == 'Update Password':
-            self.retrieved = self.fetchDescription('MODIFYING EXISTING USER')
-            self.widgetUserModPass()
+            self.description = fetchDescription('MODIFYING EXISTING USER')
+            widgetCreator.widgetUserModPass()
         elif item.text(column) == 'Delete':
-            self.retrieved = self.fetchDescription('DELETING EXISTING USER')
-            self.widgetUserDel()
+            self.description = fetchDescription('DELETING EXISTING USER')
+            widgetCreator.widgetUserDel(self.description)
         elif item.text(column) == 'List all Zones':
-            self.retrieved = self.fetchDescription('LIST ALL ZONES')
-            self.widgetListAllZones()
+            self.description = fetchDescription('LIST ALL ZONES')
+            widgetCreator.widgetListAllZones()
         elif item.text(column) == 'Limit FTP connection':
-            self.retrieved = ['Limit FTP Connections', 'With this you can limit the number of requests to ftp server.']
-            self.widgetLimitFtpConn()
+            self.description = ['Limit FTP Connections', 'With this you can limit the number of requests to ftp server.']
+            widgetCreator.widgetLimitFtpConn()
+        elif item.text(column) == title_get_acl:
+            self.description = ['', 'This script shows the already present Access Control List of the given file.']
+            widgetCreator.widgetGetAcl()
         elif item.text(column) == 'Drop':
             pass
         elif item.text(column) == 'Samba':
@@ -192,120 +202,12 @@ class Example(QMainWindow):
             print "None", item.text(column)
             pass
 
-        addDescription("DESCRIPTION", self.retrieved[1], self.vBoxBottom)
-
-    def fetchDescription(self, cmd_title):
-        retrieved = None
-
-        try:
-            conn = sqlite3.connect('/esa/database/esa.db')
-            cur = conn.cursor()
-
-            query = 'SELECT CMD_NAME_RPM, DESCRIPTION FROM command_list WHERE CMD_TITLE = "%s"' %cmd_title
-            print query
-            cur.execute(query)
-
-            retrieved = cur.fetchone()
-
-        except sqlite3.Error, e:
-            print "Error %s:" % e.args[0]
-            sys.exit(1)
-        finally:
-            if conn:
-                conn.close()
-                return retrieved
-
-    def removeWidgetTopRight(self):
-        for cnt in reversed(range(self.vBoxTop.count())):
-            # takeAt does both the jobs of itemAt and removeWidget
-            # namely it removes an item and returns it
-            widget = self.vBoxTop.takeAt(cnt).widget()
-
-            if widget is not None:
-                # widget will be None if the item is a layout
-                widget.deleteLater()
-
-    def widgetUserAdd(self):
-        self.widgetCollection.widgetUserAdd()
-
-        slots = Slots(self.widgetCollection, self.retrieved, self.vBoxBottom)
-
-        button_box = QDialogButtonBox()
-        button_box.setStandardButtons(QDialogButtonBox.Save | QDialogButtonBox.Reset)
-        button_box.accepted.connect(slots.slotUserAdd)
-        button_box.button(QDialogButtonBox.Reset).clicked.connect(slots.slotResetUserAdd)
-
-        # self.layout.addStretch(3)
-        self.vBoxTop.addWidget(button_box)
-
-    def widgetUserModDet(self):
-        self.widgetCollection.widgetUserModDet()
-
-        slots = Slots(self.widgetCollection, self.retrieved, self.vBoxBottom)
-
-        button_box = QDialogButtonBox()
-        button_box.setStandardButtons(QDialogButtonBox.Save | QDialogButtonBox.Reset)
-        button_box.accepted.connect(slots.slotUserModDet)
-        button_box.button(QDialogButtonBox.Reset).clicked.connect(slots.slotResetUserModDet)
-
-        self.vBoxTop.addWidget(button_box)
-
-    def widgetUserModPass(self):
-        self.widgetCollection.widgetUserModPass()
-
-        slots = Slots(self.widgetCollection, self.retrieved, self.vBoxBottom)
-
-        button_box = QDialogButtonBox()
-        button_box.setStandardButtons(QDialogButtonBox.Save | QDialogButtonBox.Reset)
-        button_box.accepted.connect(slots.slotUserModPass)
-        button_box.button(QDialogButtonBox.Reset).clicked.connect(slots.slotResetUserModPass)
-
-        self.vBoxTop.addWidget(button_box)
-
-    def widgetUserDel(self):
-        self.widgetCollection.widgetUserDel()
-
-        slots = Slots(self.widgetCollection, self.retrieved, self.vBoxBottom)
-
-        button_box = QDialogButtonBox()
-        button_box.setStandardButtons(QDialogButtonBox.Save)
-        button_box.accepted.connect(slots.slotUserDel)
-
-        self.vBoxTop.addWidget(button_box)
-
-    def widgetListAllZones(self):
-        self.widgetCollection.widgetListAllZones()
-
-
-        script = "%s 2>%s >%s" %(self.cmd_list_all_zones, self.error_log, self.output_log)
-
-        print script
-
-        call(script, shell=True)
-
-        if os.stat(self.error_log).st_size == 0:
-            if os.stat(self.output_log).st_size == 0:
-                self.widgetCollection.zoneLbl.setText("Error executing  command.")
-            else:
-                fo = open(self.output_log, 'r')
-                self.widgetCollection.zoneLbl.setText(fo.read())
+        if self.description != None:
+            # print "In description if", self.description
+            addDescription("DESCRIPTION", self.description[1], self.vBoxBottom)
         else:
-            fo = open(self.error_log, 'r')
-            self.widgetCollection.zoneLbl.setText(fo.read())
-
-        fo.close()
-
-    def widgetLimitFtpConn(self):
-        self.widgetCollection.widgetLimitFtpConn()
-
-        slots = Slots(self.widgetCollection, self.retrieved, self.vBoxBottom)
-
-        button_box = QDialogButtonBox()
-        button_box.setStandardButtons(QDialogButtonBox.Save | QDialogButtonBox.Reset)
-        button_box.accepted.connect(slots.slotLimitFtpConn)
-        button_box.button(QDialogButtonBox.Reset).clicked.connect(slots.slotResetLimitFtpConn)
-
-        self.vBoxTop.addWidget(button_box)
+            # print "In description  else"
+            removeDescription(self.vBoxBottom)
 
 def main():
     app = QApplication(sys.argv)
