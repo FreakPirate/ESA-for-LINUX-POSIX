@@ -5,6 +5,10 @@ from subprocess import  call
 from PyQt4 import QtCore
 from Constants import *
 
+# this class adds buttonBox and slots to the vTopBox
+# if a user clicks the button, signal is emitted and slot is executed
+# inside each slot the output is shown in vBoxBottom
+
 class WidgetCreator:
     def __init__(self, widgetCollection, vBoxTop, vBoxBottom):
         
@@ -12,9 +16,11 @@ class WidgetCreator:
         self.vBoxTop = vBoxTop
         self.vBoxBottom = vBoxBottom
 
+    # adds buttonBox and slots to UserAdd
     def widgetUserAdd(self, description):
         self.widgetCollection.widgetUserAdd()
 
+        # instantiating slots in variables
         slotSave = lambda : self.slotUserAdd(description)
         slotReset = lambda : self.slotResetUserAdd()
 
@@ -163,6 +169,21 @@ class WidgetCreator:
 
         self.vBoxTop.addWidget(button_box)
 
+    def widgetZoneAddService(self):
+        self.widgetCollection.widgetZoneAddService()
+
+        slotSave = lambda : self.slotZoneAddService()
+        slotReset = lambda : self.slotResetZoneAddService()
+
+        button_box = QDialogButtonBox()
+        button_box.setStandardButtons(QDialogButtonBox.Save | QDialogButtonBox.Reset)
+        button_box.button(QDialogButtonBox.Save).clicked.connect(slotSave)
+        button_box.button(QDialogButtonBox.Reset).clicked.connect(slotReset)
+
+        self.vBoxTop.addWidget(button_box)
+
+    # slot to respond when SAVE is clicked inside UserAdd tree widget item
+    # it adds a user to the linux with details such as username, password, uid, gid etc.
     def slotUserAdd(self, description):
         username = str(self.widgetCollection.usernameLe.text())
         password = str(self.widgetCollection.passwordLe.text())
@@ -560,7 +581,7 @@ class WidgetCreator:
 
         if os.stat(error_log).st_size == 0:
             if os.stat(output_log).st_size == 0:
-                output, detail = getAcl(filename)
+                output, detail = getAcl(targetfile)
             else:
                 fo = open(output_log, 'r')
                 output = 'OUTPUT'
@@ -577,6 +598,16 @@ class WidgetCreator:
             detail = e + '\n\n' + o
 
         addDescription(output, detail, self.vBoxBottom)
+
+    def slotZoneAddService(self):
+        zone = str(self.widgetCollection.zoneLe.text())
+        service = str(self.widgetCollection.serviceCB.currentText())
+
+        if zone == '' or zone == None:
+            self.widgetCollection.warn_lbl.setText("(*) marked fields are mandatory.")
+            return
+
+        script = "%s %s %s 2>%s >%s" %(cmd_zone_add_service, service, zone, error_log, output_log)
 
     def slotResetUserAdd(self):
         self.widgetCollection.usernameLe.clear()
@@ -616,3 +647,6 @@ class WidgetCreator:
     def slotResetSetFromExistingAcl(self):
         self.widgetCollection.sourceFileLe.clear()
         self.widgetCollection.targetFileLe.clear()
+
+    def slotResetZoneAddService(self):
+        self.widgetCollection.zoneLe.clear()

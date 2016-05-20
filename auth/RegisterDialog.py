@@ -1,3 +1,9 @@
+"""
+This module presents a dialog
+in case when no user is registered
+and asks for user credentials to store and
+add a user to ESA
+"""
 import sys
 from PyQt4 import QtGui, QtCore
 import Registrar

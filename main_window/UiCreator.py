@@ -4,16 +4,21 @@
 from PyQt4.QtGui import *
 from PyQt4.QtCore import *
 from subprocess import call
+from Constants import *
+
 
 class UiCreator():
     def __init__(self, layout):
         self.layout = layout
 
+        # warning label for mandatory items
         self.warn_lbl = QLabel()
         self.warn_lbl.setText('(*) Required fields')
 
+    # adds widget elemtents to the User Add tree widget item
     def widgetUserAdd(self):
 
+        # instantiating a Line Editor
         self.usernameLe = QLineEdit()
 
         self.passwordLe = QLineEdit()
@@ -40,6 +45,7 @@ class UiCreator():
             if i != '':
                 self.shellCB.addItem(i)
 
+        # adding all widget elements to parent layout
         self.layout.addRow("Username*", self.usernameLe)
         self.layout.addRow("Password*", self.passwordLe)
         self.layout.addRow("Shells", self.shellCB)
@@ -51,9 +57,11 @@ class UiCreator():
 
         self.layout.setVerticalSpacing(5)
 
+    # function to add widget elements to the User Modification tree item
     def widgetUserModDet(self):
         data = self.fetchNormalUsers()
 
+        # combo box provides a dropdown list to select one
         self.usernameCB = QComboBox()
         self.usernameCB.addItem('None')
         for i in reversed(data):
@@ -95,6 +103,7 @@ class UiCreator():
 
         self.layout.setVerticalSpacing(7)
 
+    # function to add widgets to change user password
     def widgetUserModPass(self):
         data = self.fetchNormalUsers()
 
@@ -284,9 +293,28 @@ class UiCreator():
         self.layout.addRow('Target File*', self.targetFileLe)
         self.layout.addRow(self.warn_lbl)
 
+    def widgetZoneAddService(self):
+        self.zoneLe = QLineEdit()
+        self.zoneLe.setPlaceholderText('Enter zone name')
 
+        script = "%s >%s" %(cmd_zone_get_services, user_log)
+        call(script, shell=True)
+        fo = open(user_log, 'r')
+        data = fo.read().split(' ')
+
+        self.serviceCB = QComboBox()
+
+        for i in data:
+            self.serviceCB.addItem(i)
+
+        self.layout.addRow('Zone*', self.zoneLe)
+        self.layout.addRow('Services*', self.serviceCB)
+        self.layout.addRow(self.warn_lbl)
+
+
+    # this function gives a list of normal users by fetching data from /etc/passwd
+    # and modifying the output
     def fetchNormalUsers(self):
-        user_log = '/tmp/user.log'
         script = "awk  -F':' '$3>999 {print $1}' /etc/passwd | grep -v nobody >%s" %user_log
         call(script, shell=True)
 

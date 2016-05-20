@@ -1,6 +1,7 @@
 
 """
-Controller module
+Controller module:
+Controls the functioning of rest of the modules
 """
 
 import sys

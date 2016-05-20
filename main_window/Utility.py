@@ -1,3 +1,5 @@
+# Helper File Functions
+
 import sqlite3
 from subprocess import call
 from PyQt4.QtGui import *
@@ -5,6 +7,7 @@ import sys
 from Constants import *
 import os
 
+# Refreshes the UserName combobox when either a  user is added or removed
 def refreshUserNameCB(widgetCollection):
     widgetCollection.usernameCB.clear()
 
@@ -15,7 +18,9 @@ def refreshUserNameCB(widgetCollection):
     #     self.widgetCollection.usernameCB.removeItem(i)
 
     user_log = '/tmp/user.log'
+    # script to be executed
     script = "awk  -F':' '$3>999 {print $1}' /etc/passwd | grep -v nobody >%s" %user_log
+    # this is how a script is exected and output is recorded inside /tmp/output.log
     call(script, shell=True)
 
     fo = open(user_log, 'r')
@@ -26,6 +31,7 @@ def refreshUserNameCB(widgetCollection):
             widgetCollection.usernameCB.addItem(i)
     fo.close()
 
+# returns a stream of services available on the system
 def getAcl(filename):
 
     script = "%s %s 2>%s >%s" %(cmd_get_acl, filename, error_log, output_log)
@@ -54,6 +60,7 @@ def getAcl(filename):
     return output, detail
 
 
+# adds content provided to the vBoxBottom
 def addDescription(title, content, vBoxBottom):
     removeDescription(vBoxBottom)
     lbl_title = QLabel()
@@ -69,6 +76,7 @@ def addDescription(title, content, vBoxBottom):
 
     # print self.vBoxBottom
 
+# Removes any previously set description inside vBoxBottom
 def removeDescription(vBoxBottom):
     for cnt in reversed(range(vBoxBottom.count())):
         # takeAt does both the jobs of itemAt and removeWidget
@@ -79,6 +87,7 @@ def removeDescription(vBoxBottom):
             # widget will be None if the item is a layout
             widget.deleteLater()
 
+# instantiate connection to the database and queries for description
 def fetchDescription(cmd_title):
     retrieved = None
 

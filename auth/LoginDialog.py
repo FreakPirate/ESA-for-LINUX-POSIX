@@ -1,3 +1,6 @@
+"""
+This module presents a login dialog to the user for the purpose of authentication
+"""
 import sys
 from PyQt4 import QtGui, QtCore
 import Authenticator
