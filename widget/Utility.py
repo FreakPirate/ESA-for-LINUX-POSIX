@@ -1,11 +1,13 @@
 # Helper File Functions
 
+import os
 import sqlite3
 from subprocess import call
+
 from PyQt4.QtGui import *
-import sys
+
 from Constants import *
-import os
+
 
 # Refreshes the UserName combobox when either a  user is added or removed
 def refreshUserNameCB(widgetCollection):
@@ -59,6 +61,22 @@ def getAcl(filename):
 
     return output, detail
 
+def getZones():
+    script = "%s 2>%s >%s" %(cmd_zone_list_zones, error_log, output_log)
+    call(script, shell=True)
+
+    if os.stat(error_log).st_size == 0:
+        if os.stat(output_log).st_size == 0:
+            detail = 'None'
+        else:
+            fo = open(output_log, 'r')
+            detail = fo.read()
+            fo.close()
+    else:
+        fo = open(error_log, 'r')
+        detail = fo.read()
+
+    return detail
 
 # adds content provided to the vBoxBottom
 def addDescription(title, content, vBoxBottom):

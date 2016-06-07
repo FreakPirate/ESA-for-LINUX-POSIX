@@ -1,19 +1,11 @@
-"""
-This module presents a dialog
-in case when no user is registered
-and asks for user credentials to store and
-add a user to ESA
-"""
 import sys
 from PyQt4 import QtGui, QtCore
 import Registrar
+from Constants import lock_files, logo_path
 
 
 class RegisterDialog(QtGui.QDialog):
-    def __init__(self, database_name, table_names, logo_path, parent=None):
-        self.database_name = database_name
-        self.table_names = table_names
-        self.logo_path = logo_path
+    def __init__(self, parent=None):
         super(RegisterDialog, self).__init__(parent)
         self.initUI()
 
@@ -60,7 +52,7 @@ class RegisterDialog(QtGui.QDialog):
         registerLayout = QtGui.QFormLayout()
         registerLayout.addRow("Username*", self.username)
         registerLayout.addRow("E-Mail*", self.email)
-        registerLayout.addRow("Phone No", self.phone)
+        registerLayout.addRow("Phone No*", self.phone)
         registerLayout.addRow("Password*", self.password)
         registerLayout.addRow("Re-Enter*", self.re_password)
         registerLayout.addRow("Security Question", self.sec_ques)
@@ -82,7 +74,7 @@ class RegisterDialog(QtGui.QDialog):
         vBox.addStretch(3)
         vBox.addWidget(button_box)
 
-        self.setWindowIcon(QtGui.QIcon(self.logo_path))
+        self.setWindowIcon(QtGui.QIcon(logo_path))
         self.setWindowTitle('Registration Dialog')
         self.resize(250, 300)
 
@@ -103,27 +95,32 @@ class RegisterDialog(QtGui.QDialog):
         sec_question = str(self.sec_ques.currentText())
         sec_ans = str(self.sec_ans.text())
 
-        if username == '' or email == '' or password == '' or re_password == '' or sec_ans == '':
-            self.warn_lbl.setText("(*) marked fields are mandatory.")
+        if username == '' or email == '' or phone == '' or password == '' or re_password == '' or sec_ans == '':
+            self.warn_lbl.setText("You can't leave the (*) Required Fields empty.")
             return
 
         if password != re_password:
-            self.warn_lbl.setText("Passwords do not match")
+            self.warn_lbl.setText("Passwords don't match. Try again?")
             self.password.clear()
             self.re_password.clear()
             return
 
         register = Registrar.add(username, email, phone, password, sec_question, sec_ans,
-            database_name, table_names)
+                                 lock_files[0], lock_files[1])
 
         if register == "username":
-            self.warn_lbl.setText('User already exist')
+            self.warn_lbl.setText('Username already present. Try another?')
             self.username.clear()
             return
 
         if register == "email":
-            self.warn_lbl.setText('Email-ID already exist')
+            self.warn_lbl.setText('Email-ID already present. Try another?')
             self.email.clear()
+            return
+
+        if register == "phone":
+            self.warn_lbl.setText('Phone Number already present. Try another?')
+            self.phone.clear()
             return
 
         if register == "reject":

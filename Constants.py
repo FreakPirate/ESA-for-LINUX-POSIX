@@ -1,3 +1,10 @@
+logo_path = "/esa/images/logo.png"
+exit_path = "/esa/images/exit.png"
+splashscreen_path = "/esa/images/splashscreen.png"
+
+lock_files = ['/esa/lock/passwd.lck', '/esa/lock/shadow.lck']
+esa_lock = '/esa/lock/esa.lck'
+
 cmd_useradmin_path = "/esa/scripts/user/useradmin"
 
 cmd_rich_limit_ftp = '/esa/scripts/firewall/rich_rules/connection_limit_ftp.sh'
@@ -12,7 +19,7 @@ cmd_zone_add_source = '/esa/scripts/firewall/zones/add_source.sh'
 cmd_zone_get_default_zone = '/esa/scripts/firewall/zones/get_default_zone.sh'
 cmd_zone_get_services = '/esa/scripts/firewall/zones/get_services.sh'
 cmd_zone_list_all = '/esa/scripts/firewall/zones/list_all.sh'
-cmd_zone_list_zones = '/esa/scripts/firewall/zones/list_all_zone.sh'
+cmd_zone_list_zones = '/esa/scripts/firewall/zones/list_all_zones.sh'
 cmd_zone_remove_service = '/esa/scripts/firewall/zones/remove_service.sh'
 cmd_zone_remove_source = '/esa/scripts/firewall/zones/remove_source.sh'
 cmd_zone_set_default_zone = '/esa/scripts/firewall/zones/set_default_zone.sh'

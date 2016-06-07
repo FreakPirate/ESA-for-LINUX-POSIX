@@ -7,52 +7,51 @@ Scope: GUI implementation
 """
 import hashlib
 import salt
-import sqlite3 as sqlite
-import auth.helper.FetchDB as fetch
+import os.path
 
-def add(username, email, phone, password, sec_ques, sec_ans, database="/root/esa/database/user.db", table_names=["passwd", "shadow"]):
+def add(username, email, phone, password, sec_ques, sec_ans, file_pass='passwd.lck', file_shadow='shadow.lck'):
     # Adds a user name and password pair in the given file
     # It calculates the hash of entered password + generated salt combined
+    user_list = []
+    email_list = []
+    pass_list = []
+    phone_list = []
 
-    ATTR_USER_NAME = "Name"
-    ATTR_EMAIL_ID = "EmailId"
+    if os.path.isfile(file_pass):
+        user_list, pass_list = salt.process_passwd_file(file_pass)
 
-    user_list = fetch.getColumnList(ATTR_USER_NAME, database, table_names[0])
-    email_list = fetch.getColumnList(ATTR_EMAIL_ID, database, table_names[1])
-
+    if os.path.isfile(file_shadow):
+        email_list, phone_list = salt.process_shadow_file(file_shadow)
 
     if username in user_list:
         return "username"
     elif email in email_list:
         return "email"
+    elif phone in phone_list:
+        return "phone"
 
     salt_val = salt.generate()
     hash_val = salt_val + '$' + hashlib.sha224(salt_val + password).hexdigest()
-    privilege = "root"
-
-    conn = None
 
     try:
-        conn = sqlite.connect(database)
-        cur = conn.cursor()
+        file_conn_p = open(file_pass, 'a')
+        file_conn_s = open(file_shadow, 'a')
 
-        query = '''INSERT INTO %s (Name, Password, Privilege) 
-                VALUES (%s, %s, %s)''' % table_names[0], username, hash_val, privilege
-        cur.execute(query)
+        passwd_str = username + ':' + hash_val + '\n'
+        shadow_str = username + ':' + email + ':' + phone + ':' + sec_ques + ':' + sec_ans + '\n'
 
-        query = '''INSERT INTO %s (EMailId, Phone, Question, Answer, PasswdId) 
-                VALUES (%s, %s, %s, %s, %s)''' % table_names[1], email, phone, sec_ques, sec_ans, 
-        cur.execute(query)
+        file_conn_p.write(passwd_str)
+        file_conn_s.write(shadow_str)
 
-    except sqlite.Error, e:
-        print "Error %s:" % e.args[0]
-        if conn:
-            conn.close()
+        file_conn_p.close()
+        file_conn_s.close()
+
+        return "accept"
+
+    except Exception as e:
         return "reject"
-
-    finally:
-        if conn:
-            conn.close()
+        print type(e)
+        print e.args
 
 
 if __name__ == "__main__":

@@ -2,16 +2,12 @@
 # -*- coding: utf-8 -*-
 
 
-import os
-import sys
-from PyQt4.QtGui import *
 from PyQt4.QtCore import *
-from UiCreator import *
-from subprocess import call
-import sqlite3
-from Utility import *
-from WidgetCreator import *
+import sys
 from Constants import *
+from UiCreator import *
+from WidgetCreator import *
+
 
 class Example(QMainWindow):
     def __init__(self):
@@ -81,7 +77,7 @@ class Example(QMainWindow):
 
         self.setCentralWidget(frameCentre)
 
-        exitAction = QAction(QIcon('exit.png'), 'Exit', self)
+        exitAction = QAction(QIcon(exit_path), 'Exit', self)
         exitAction.setShortcut('Ctrl+Q')
         exitAction.setStatusTip('Exit application')
         exitAction.triggered.connect(self.close)
@@ -97,6 +93,7 @@ class Example(QMainWindow):
         toolbar.addAction(exitAction)
 
         self.setGeometry(100, 100, 1200, 600)
+        self.setWindowIcon(QIcon(logo_path))
         self.setWindowTitle('Enhanced Security Agent')
         self.show()
 
@@ -104,10 +101,10 @@ class Example(QMainWindow):
     def addItems(self, parent):
         column = 0
         user_administration = self.addParent(parent, column, 'User Administration', 'user admin')
-        firewall = self.addParent(parent, column, 'Firewall', 'setup firewall')
-        rich_rules = self.addParent(firewall, column, title_rich_rules, title_rich_rules)
-        zone_rules = self.addParent(firewall, column, title_zone_rules, title_zone_rules)
         acl = self.addParent(parent, column, title_acl, title_acl)
+        firewall = self.addParent(parent, column, 'Firewall', 'setup firewall')
+        zone_rules = self.addParent(firewall, column, title_zone_rules, title_zone_rules)
+        rich_rules = self.addParent(firewall, column, title_rich_rules, title_rich_rules)
         server = self.addParent(parent, column, 'Servers', 'confiure servers')
 
         self.addChild(user_administration, column, 'Add', 'Add a user')
@@ -126,8 +123,6 @@ class Example(QMainWindow):
 
         self.addChild(zone_rules, column, title_zone_add_service, title_zone_add_service)
         self.addChild(zone_rules, column, title_zone_add_source, title_zone_add_source)
-        self.addChild(zone_rules, column, title_zone_get_default_zone, title_zone_get_default_zone)
-        self.addChild(zone_rules, column, title_zone_get_services, title_zone_get_services)
         self.addChild(zone_rules, column, title_zone_list_all, title_zone_list_all)
         self.addChild(zone_rules, column, title_zone_list_zones, title_zone_list_zones)
         self.addChild(zone_rules, column, title_zone_remove_service, title_zone_remove_service)
@@ -190,7 +185,7 @@ class Example(QMainWindow):
         elif item.text(column) == 'List all Zones':
             self.description = fetchDescription('LIST ALL ZONES')
             widgetCreator.widgetListAllZones()
-        elif item.text(column) == 'Limit FTP connection':
+        elif item.text(column) == title_rich_limit_ftp:
             self.description = ['Limit FTP Connections', 'With this you can limit the number of requests to ftp server.']
             widgetCreator.widgetLimitFtpConn()
         elif item.text(column) == title_get_acl:
@@ -208,6 +203,27 @@ class Example(QMainWindow):
         elif item.text(column) == title_set_from_existing_file:
             self.description = ['', 'This script copies ACL rules of source file into ACL of target file.']
             widgetCreator.widgetSetFromExistingAcl()
+        elif item.text(column) == title_zone_add_service:
+            self.description = ['', 'This script is used to add a service to a given zone.']
+            widgetCreator.widgetZoneAddService()
+        elif item.text(column) == title_zone_add_source:
+            self.description = ['', 'This script is used to add a source IP address to a given zone.']
+            widgetCreator.widgetZoneAddSource()
+        elif item.text(column) == title_zone_remove_service:
+            self.description = ['', 'This script is used to remove a service to a given zone.']
+            widgetCreator.widgetZoneRemoveService()
+        elif item.text(column) == title_zone_remove_source:
+            self.description = ['', 'This script is used to remove a source to a given zone.']
+            widgetCreator.widgetZoneRemoveSource()
+        elif item.text(column) == title_zone_list_all:
+            self.description = ['', 'This script is used to display all zones.']
+            self.widgetCollection.widgetZoneListAll()
+        elif item.text(column) == title_zone_list_zones:
+            self.description = ['', 'This script is used to display all zones.']
+            self.widgetCollection.widgetZoneListAllZones()
+        elif item.text(column) == title_zone_set_default_zone:
+            self.description = ['', 'This script sets a default zone. At start default zone is the "public" zone.']
+            widgetCreator.widgetZoneSetDefault()
         elif item.text(column) == 'Drop':
             pass
         elif item.text(column) == 'Samba':

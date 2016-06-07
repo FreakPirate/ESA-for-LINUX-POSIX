@@ -1,9 +1,11 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-from PyQt4.QtGui import *
-from PyQt4.QtCore import *
+import os
 from subprocess import call
+
+from PyQt4.QtGui import *
+
 from Constants import *
 
 
@@ -311,6 +313,91 @@ class UiCreator():
         self.layout.addRow('Services*', self.serviceCB)
         self.layout.addRow(self.warn_lbl)
 
+    def widgetZoneAddSource(self):
+        self.zoneLe = QLineEdit()
+        self.zoneLe.setPlaceholderText('Enter valid zone')
+
+        self.sourceLe = QLineEdit()
+        self.sourceLe.setPlaceholderText('Enter source Ip Address')
+
+        self.layout.addRow('Zone*', self.zoneLe)
+        self.layout.addRow('Source IP*', self.sourceLe)
+        self.layout.addRow(self.warn_lbl)
+
+    def widgetZoneListAll(self):
+        self.zoneLbl = QLabel()
+        self.zoneLbl.setWordWrap(True)
+
+        script = "%s 2>%s >%s" %(cmd_zone_list_all, error_log, output_log)
+        call(script, shell=True)
+
+        detail = ''
+        if os.stat(error_log).st_size == 0:
+            if os.stat(output_log).st_size == 0:
+                detail = 'None'
+            else:
+                fo = open(output_log, 'r')
+                detail = fo.read()
+                fo.close()
+        else:
+            fo = open(error_log, 'r')
+            detail = fo.read()
+            fo.close()
+
+        self.zoneLbl.setText(detail)
+        self.layout.addRow(self.zoneLbl)
+
+    def widgetZoneListAllZones(self):
+        self.zoneLbl = QLabel()
+        self.zoneLbl.setWordWrap(True)
+
+        script = "%s 2>%s >%s" %(cmd_zone_list_zones, error_log, output_log)
+        call(script, shell=True)
+
+        detail = ''
+        if os.stat(error_log).st_size == 0:
+            if os.stat(output_log).st_size == 0:
+                detail = 'None'
+            else:
+                fo = open(output_log, 'r')
+                detail = fo.read()
+                fo.close()
+        else:
+            fo = open(error_log, 'r')
+            detail = fo.read()
+            fo.close()
+
+        self.zoneLbl.setText(detail)
+        self.layout.addRow(self.zoneLbl)
+
+    def widgetZoneRemoveService(self):
+        self.zoneLe = QLineEdit()
+        self.zoneLe.setPlaceholderText('Enter valid zone')
+
+        self.serviceLe = QLineEdit()
+        self.serviceLe.setPlaceholderText('Enter service to remove from above zone')
+
+        self.layout.addRow('Zone*', self.zoneLe)
+        self.layout.addRow('Service*', self.serviceLe)
+        self.layout.addRow(self.warn_lbl)
+
+    def widgetZoneRemoveSource(self):
+        self.zoneLe = QLineEdit()
+        self.zoneLe.setPlaceholderText('Enter valid zone')
+
+        self.sourceLe = QLineEdit()
+        self.sourceLe.setPlaceholderText('Enter service to remove from above zone')
+
+        self.layout.addRow('Zone*', self.zoneLe)
+        self.layout.addRow('Source*', self.sourceLe)
+        self.layout.addRow(self.warn_lbl)
+
+    def widgetZoneSetDefault(self):
+        self.zoneLe = QLineEdit()
+        self.zoneLe.setPlaceholderText('Enter valid zone')
+
+        self.layout.addRow('Zone*', self.zoneLe)
+        self.layout.addRow(self.warn_lbl)
 
     # this function gives a list of normal users by fetching data from /etc/passwd
     # and modifying the output

@@ -1,9 +1,11 @@
-from Utility import *
-from PyQt4.QtGui import *
 import os
 from subprocess import  call
-from PyQt4 import QtCore
+
+from PyQt4.QtGui import *
+
 from Constants import *
+from Utility import *
+
 
 # this class adds buttonBox and slots to the vTopBox
 # if a user clicks the button, signal is emitted and slot is executed
@@ -174,6 +176,58 @@ class WidgetCreator:
 
         slotSave = lambda : self.slotZoneAddService()
         slotReset = lambda : self.slotResetZoneAddService()
+
+        button_box = QDialogButtonBox()
+        button_box.setStandardButtons(QDialogButtonBox.Save | QDialogButtonBox.Reset)
+        button_box.button(QDialogButtonBox.Save).clicked.connect(slotSave)
+        button_box.button(QDialogButtonBox.Reset).clicked.connect(slotReset)
+
+        self.vBoxTop.addWidget(button_box)
+
+    def widgetZoneAddSource(self):
+        self.widgetCollection.widgetZoneAddSource()
+
+        slotSave = lambda : self.slotZoneAddSource()
+        slotReset = lambda : self.slotResetZoneAddSource()
+
+        button_box = QDialogButtonBox()
+        button_box.setStandardButtons(QDialogButtonBox.Save | QDialogButtonBox.Reset)
+        button_box.button(QDialogButtonBox.Save).clicked.connect(slotSave)
+        button_box.button(QDialogButtonBox.Reset).clicked.connect(slotReset)
+
+        self.vBoxTop.addWidget(button_box)
+
+    def widgetZoneRemoveService(self):
+        self.widgetCollection.widgetZoneRemoveService()
+
+        slotSave = lambda : self.slotZoneRemoveService()
+        slotReset = lambda : self.slotResetZoneRemoveService()
+
+        button_box = QDialogButtonBox()
+        button_box.setStandardButtons(QDialogButtonBox.Save | QDialogButtonBox.Reset)
+        button_box.button(QDialogButtonBox.Save).clicked.connect(slotSave)
+        button_box.button(QDialogButtonBox.Reset).clicked.connect(slotReset)
+
+        self.vBoxTop.addWidget(button_box)
+
+    def widgetZoneRemoveSource(self):
+        self.widgetCollection.widgetZoneRemoveSource()
+
+        slotSave = lambda : self.slotZoneRemoveSource()
+        slotReset = lambda : self.slotResetZoneRemoveSource()
+
+        button_box = QDialogButtonBox()
+        button_box.setStandardButtons(QDialogButtonBox.Save | QDialogButtonBox.Reset)
+        button_box.button(QDialogButtonBox.Save).clicked.connect(slotSave)
+        button_box.button(QDialogButtonBox.Reset).clicked.connect(slotReset)
+
+        self.vBoxTop.addWidget(button_box)
+
+    def widgetZoneSetDefault(self):
+        self.widgetCollection.widgetZoneSetDefault()
+
+        slotSave = lambda : self.slotZoneSetDefault()
+        slotReset = lambda : self.slotResetZoneSetDefault()
 
         button_box = QDialogButtonBox()
         button_box.setStandardButtons(QDialogButtonBox.Save | QDialogButtonBox.Reset)
@@ -608,6 +662,145 @@ class WidgetCreator:
             return
 
         script = "%s %s %s 2>%s >%s" %(cmd_zone_add_service, service, zone, error_log, output_log)
+        call(script, shell=True)
+
+        output = ''
+        detail = ''
+
+        if os.stat(error_log).st_size == 0:
+            if os.stat(output_log).st_size == 0:
+                output='OUTPUT'
+                detail = 'None'
+            else:
+                fo = open(output_log, 'r')
+                detail = fo.read()
+                fo.close()
+                detail = detail +'\n' + getZones()
+        else:
+            fo = open(error_log, 'r')
+            detail = fo.read()
+            fo.close()
+
+        addDescription(output, detail, self.vBoxBottom)
+
+    def slotZoneAddSource(self):
+        zone = str(self.widgetCollection.zoneLe.text())
+        source = str(self.widgetCollection.sourceLe.text())
+
+        if zone == '' or zone == None:
+            self.widgetCollection.warn_lbl.setText("(*) marked fields are mandatory.")
+            return
+
+        script = "%s %s %s 2>%s >%s" %(cmd_zone_add_source, source, zone, error_log, output_log)
+        call(script, shell=True)
+
+        output = ''
+        detail = ''
+
+        if os.stat(error_log).st_size == 0:
+            if os.stat(output_log).st_size == 0:
+                output='OUTPUT'
+                detail = 'None'
+            else:
+                fo = open(output_log, 'r')
+                detail = fo.read()
+                fo.close()
+                detail = detail +'\n' + getZones()
+        else:
+            fo = open(error_log, 'r')
+            detail = fo.read()
+            fo.close()
+
+        addDescription(output, detail, self.vBoxBottom)
+
+    def slotZoneRemoveService(self):
+        zone = str(self.widgetCollection.zoneLe.text())
+        service = str(self.widgetCollection.serviceLe.text())
+
+        if zone == '' or zone == None:
+            self.widgetCollection.warn_lbl.setText("(*) marked fields are mandatory.")
+            return
+
+        script = "%s %s %s 2>%s >%s" %(cmd_zone_remove_service, service, zone, error_log, output_log)
+        call(script, shell=True)
+
+        output = ''
+        detail = ''
+
+        if os.stat(error_log).st_size == 0:
+            if os.stat(output_log).st_size == 0:
+                output='OUTPUT'
+                detail = 'None'
+            else:
+                fo = open(output_log, 'r')
+                detail = fo.read()
+                fo.close()
+                detail = detail +'\n' + getZones()
+        else:
+            fo = open(error_log, 'r')
+            detail = fo.read()
+            fo.close()
+
+        addDescription(output, detail, self.vBoxBottom)
+
+    def slotZoneRemoveSource(self):
+        zone = str(self.widgetCollection.zoneLe.text())
+        service = str(self.widgetCollection.sourceLe.text())
+
+        if zone == '' or zone == None:
+            self.widgetCollection.warn_lbl.setText("(*) marked fields are mandatory.")
+            return
+
+        script = "%s %s %s 2>%s >%s" %(cmd_zone_remove_source, service, zone, error_log, output_log)
+        call(script, shell=True)
+
+        output = ''
+        detail = ''
+
+        if os.stat(error_log).st_size == 0:
+            if os.stat(output_log).st_size == 0:
+                output='OUTPUT'
+                detail = 'None'
+            else:
+                fo = open(output_log, 'r')
+                detail = fo.read()
+                fo.close()
+                detail = detail +'\n' + getZones()
+        else:
+            fo = open(error_log, 'r')
+            detail = fo.read()
+            fo.close()
+
+        addDescription(output, detail, self.vBoxBottom)
+
+    def slotZoneSetDefault(self):
+        zone = str(self.widgetCollection.zoneLe.text())
+
+        if zone == '' or zone == None:
+            self.widgetCollection.warn_lbl.setText("(*) marked fields are mandatory.")
+            return
+
+        script = "%s %s 2>%s >%s" %(cmd_zone_remove_source, zone, error_log, output_log)
+        call(script, shell=True)
+
+        output = ''
+        detail = ''
+
+        if os.stat(error_log).st_size == 0:
+            if os.stat(output_log).st_size == 0:
+                output='OUTPUT'
+                detail = 'None'
+            else:
+                fo = open(output_log, 'r')
+                detail = fo.read()
+                fo.close()
+                detail = detail +'\n' + getZones()
+        else:
+            fo = open(error_log, 'r')
+            detail = fo.read()
+            fo.close()
+
+        addDescription(output, detail, self.vBoxBottom)
 
     def slotResetUserAdd(self):
         self.widgetCollection.usernameLe.clear()
@@ -649,4 +842,19 @@ class WidgetCreator:
         self.widgetCollection.targetFileLe.clear()
 
     def slotResetZoneAddService(self):
+        self.widgetCollection.zoneLe.clear()
+
+    def slotResetZoneAddSource(self):
+        self.widgetCollection.zoneLe.clear()
+        self.widgetCollection.sourceLe.clear()
+
+    def slotResetZoneRemoveService(self):
+        self.widgetCollection.zoneLe.clear()
+        self.widgetCollection.serviceLe.clear()
+
+    def slotResetZoneRemoveSource(self):
+        self.widgetCollection.zoneLe.clear()
+        self.widgetCollection.sourceLe.clear()
+
+    def slotResetZoneSetDefault(self):
         self.widgetCollection.zoneLe.clear()
